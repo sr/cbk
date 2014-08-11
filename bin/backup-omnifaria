@@ -37,11 +37,11 @@ for i in $(seq 1 $pages_count); do
         omnifaria.com/page/$i
 done
 
-exit
 message="
 synced omnifaria.com with $(basename "$0")
 
 $(cat "$0")
 "
 
-true
+git add .
+git commit -m "$message"
