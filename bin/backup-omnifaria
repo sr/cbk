@@ -1,0 +1,47 @@
+#!/bin/sh
+# Usage: backup-omnifaria
+set -e
+
+: ${SITE_URL:="omnifaria.com"}
+: ${ARCHIVE_DIR:="$HOME/Documents/Omnifaria"}
+
+test -d "$ARCHIVE_DIR" || mkdir -p "$ARCHIVE_DIR"
+
+cd "$ARCHIVE_DIR"
+
+repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
+if test $? != 0 || test "$repo_check" != "$ARCHIVE_DIR";
+then
+    git init
+fi
+
+pages_count="$(
+    curl -s http://omnifaria.com |
+    grep -o -E 'data-total-pages="\d+"' |
+    cut -d"=" -f2 |
+    cut -d"\"" -f2
+)"
+
+for i in $(seq 1 $pages_count); do
+    wget -q \
+        --header="From: 'Simon Rozet' <me@simonrozet.com>" \
+        --header="User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.77.4 (KHTML, like Gecko) Version/7.0.5 Safari/537.77.4" \
+        --limit-rate=500k \
+        --random-wait \
+        --wait=0.5 \
+        --page-requisites \
+        --span-hosts \
+        --convert-links \
+        --timestamping \
+        --adjust-extension \
+        omnifaria.com/page/$i
+done
+
+exit
+message="
+synced omnifaria.com with $(basename "$0")
+
+$(cat "$0")
+"
+
+true
