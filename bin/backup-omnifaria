@@ -12,7 +12,7 @@ cd "$ARCHIVE_DIR"
 repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
 if test $? != 0 || test "$repo_check" != "$ARCHIVE_DIR";
 then
-    git init
+    git init>/dev/null
 fi
 
 pages_count="$(
