@@ -35,6 +35,10 @@ for i in $(seq 1 $pages_count); do
         --timestamping \
         --adjust-extension \
         omnifaria.com/page/$i
+
+    ruby -pi \
+        -e '$_.gsub!(/http:\/\/omnifaria\.com\/page\/(\d+)"/, "\\1.html\"")' \
+        omnifaria.com/page/$i.html
 done
 
 message="
