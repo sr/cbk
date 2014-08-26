@@ -4,7 +4,9 @@ set -e
 
 : ${ARCHIVE_DIR:="$HOME/Documents/Omnifaria"}
 
-test -d "$ARCHIVE_DIR" || mkdir -p "$ARCHIVE_DIR"
+test -d "$ARCHIVE_DIR" || {
+    echo >&2 "$ARCHIVE_DIR directory not found"
+}
 cd "$ARCHIVE_DIR"
 
 repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
