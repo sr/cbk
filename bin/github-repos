@@ -21,7 +21,7 @@ fi
 authparam="access_token=$token"
 apiurl="https://api.github.com"
 authurl="$apiurl/user?$authparam"
-reposurl="$apiurl/users/$user/repos?$authparam"
+reposurl="$apiurl/user/repos?$authparam"
 
 # make sure we're authenticated
 if ! headers "$authurl" | grep -q "Status: 200 OK"
