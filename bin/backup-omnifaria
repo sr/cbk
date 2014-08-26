@@ -2,11 +2,9 @@
 # Usage: backup-omnifaria
 set -e
 
-: ${SITE_URL:="omnifaria.com"}
 : ${ARCHIVE_DIR:="$HOME/Documents/Omnifaria"}
 
 test -d "$ARCHIVE_DIR" || mkdir -p "$ARCHIVE_DIR"
-
 cd "$ARCHIVE_DIR"
 
 repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
