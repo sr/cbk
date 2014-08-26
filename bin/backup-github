@@ -1,0 +1,45 @@
+#!/bin/sh
+## Usage: backup-github <directory>
+##
+## Mirror all GitHub repository into the given directory.
+## See Also: github-repos(1), git-mirror(1)
+set -e
+
+destdir="$1"
+
+# usage and help
+if test $# -eq 0 || test -z "$destdir" || test "$destdir" = "--help"
+then
+    cat "$0" | grep '^##' | cut -c4- 1>&2
+    exit 2
+fi
+
+# make sure the mirror base directory exists
+if ! test -d "$destdir"
+then
+    echo >&2 "not a directory: $destdir"
+    exit 1
+fi
+
+# grab the user/token pair and make sure they're set
+user="$(git config --get github.user)"
+token="$(git config --get github.repos-token)"
+if test -z "$user" || test -z "$token"
+then
+    echo >&2 "github.user or github.repos-token not set"
+    exit 1
+fi
+
+github-repos "$user" "$token" |
+while read line
+do
+    giturl="$line"
+    name="$(
+        echo "$giturl" |
+        cut -d"/" -f5 |
+        sed -e "s/.git$//g"
+    )"
+    repodir="$destdir/$name.git"
+
+    git-mirror "$giturl" "$repodir"
+done
