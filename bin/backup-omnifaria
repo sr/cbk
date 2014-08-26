@@ -6,6 +6,7 @@ set -e
 
 test -d "$ARCHIVE_DIR" || {
     echo >&2 "$ARCHIVE_DIR directory not found"
+    exit 1
 }
 cd "$ARCHIVE_DIR"
 
