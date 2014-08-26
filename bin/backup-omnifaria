@@ -41,11 +41,9 @@ for i in $(seq 1 $pages_count); do
         omnifaria.com/page/$i.html
 done
 
-message="
-synced omnifaria.com with $(basename "$0")
-
-$(cat "$0")
-"
-
-git add .
-git commit -m "$message"
+# commit changes
+test -z "$(git status --porcelain)" && {
+    message="synced omnifaria.com with $(basename "$0")"
+    git add . >/dev/null
+    git commit -m "$message">/dev/null
+}
