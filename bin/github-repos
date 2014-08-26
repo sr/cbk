@@ -1,0 +1,42 @@
+#!/bin/sh
+# Usage: github-repos
+#
+# Writes the HTTPS clone URLs of all GitHub repositories which are accessible
+# by the `github.user` and `github.repos-token` pair as configured via
+# git-config(1).
+#
+# Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
+
+abort() {
+    echo >&2 $@
+    exit 1
+}
+
+# grab the user/token pair and make sure they're set
+user="$(git config --get github.user)"
+token="$(git config --get github.repos-token)"
+test -z "$user" && abort "github.user git config not set"
+test -z "$token" && abort "github.repos-token git config not set"
+
+# construct the api url for grabbing all repos
+baseurl="https://api.github.com/users/$user/repos?access_token=$token"
+
+# grab the last page number
+last_page=$(
+    headers "$baseurl" |
+    grep Link: |
+    cut -d"," -f2 |
+    cut -d"&" -f2 |
+    cut -d"=" -f2 |
+    cut -d">" -f1
+)
+
+# iterate through all pages and write the repos' clones urls
+for i in $(seq 1 $last_page)
+do
+    curl -s "$baseurl&page=$i" |
+        grep clone_url |
+        cut -d" " -f6 |
+        sed -e "s/[\",]//g" |
+        tr ' ' '\n'
+done
