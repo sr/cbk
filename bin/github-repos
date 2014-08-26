@@ -1,40 +1,54 @@
 #!/bin/sh
-# Usage: github-repos
-#
-# Writes the HTTPS clone URLs of all GitHub repositories which are accessible
-# by the `github.user` and `github.repos-token` pair as configured via
-# git-config(1).
-#
-# Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
+## Usage: github-repos <user> <token>
+##
+## Writes the HTTPS clone URLs of all GitHub repositories which are accessible
+## by the given GitHub user and token to stdout.
+##
+## Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
+set -e
 
-abort() {
-    echo >&2 $@
-    exit 1
-}
+user="$1"
+token="$2"
 
-# grab the user/token pair and make sure they're set
-user="$(git config --get github.user)"
-token="$(git config --get github.repos-token)"
-test -z "$user" && abort "github.user git config not set"
-test -z "$token" && abort "github.repos-token git config not set"
+# usage and help
+if test $# -eq 0 || test -z "$user" || test -z "$token"
+then
+    cat "$0" | grep '^##' | cut -c4- 1>&2
+    exit 2
+fi
 
 # construct the api url for grabbing all repos
-baseurl="https://api.github.com/users/$user/repos?access_token=$token"
+authparam="access_token=$token"
+apiurl="https://api.github.com"
+authurl="$apiurl/user?$authparam"
+reposurl="$apiurl/users/$user/repos?$authparam"
+
+# make sure we're authenticated
+if ! headers "$authurl" | grep -q "Status: 200 OK"
+then
+    echo >&2 "authentication failed"
+    exit 1
+fi
 
 # grab the last page number
 last_page=$(
-    headers "$baseurl" |
+    headers "$reposurl" |
     grep Link: |
     cut -d"," -f2 |
     cut -d"&" -f2 |
     cut -d"=" -f2 |
     cut -d">" -f1
 )
+if test -z "$last_page"
+then
+    echo >&2 "failed to get the last page number."
+    exit 1
+fi
 
-# iterate through all pages and write the repos' clones urls
+# iterate through all pages and write the repos' clones urls to stdout
 for i in $(seq 1 $last_page)
 do
-    curl -s "$baseurl&page=$i" |
+    curl -s -f "$reposurl&page=$i" |
         grep clone_url |
         cut -d" " -f6 |
         sed -e "s/[\",]//g" |
