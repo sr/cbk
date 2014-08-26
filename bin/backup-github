@@ -30,7 +30,7 @@ then
     exit 1
 fi
 
-github-repos "$user" "$token" |
+github-repos "$user" "$token" | grep -v roko.git | grep -v jekyll-pages |
 while read line
 do
     giturl="$line"
