@@ -19,14 +19,13 @@ pages_count="$(
     cut -d"=" -f2 |
     cut -d"\"" -f2
 )"
-
-user_agent="User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) " \
-    "AppleWebKit/537.77.4 (KHTML, like Gecko) Version/7.0.5 Safari/537.77.4"
+ua="User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4)"
+ua="$ua AppleWebKit/537.77.4 (KHTML, like Gecko) Version/7.0.5 Safari/537.77.4"
 
 for i in $(seq 1 $pages_count); do
     wget -q \
         --header="From: 'Simon Rozet' <me@simonrozet.com>" \
-        --header="$user_agent" \
+        --header="$ua" \
         --limit-rate=500k \
         --random-wait \
         --wait=0.5 \
