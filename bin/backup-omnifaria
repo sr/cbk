@@ -45,7 +45,7 @@ for i in $(seq 1 $pages_count); do
 done
 
 # commit changes
-test -z "$(git status --porcelain)" && {
+test -n "$(git status --porcelain)" && {
     message="synced omnifaria.com with $(basename "$0")"
     git add . >/dev/null
     git commit -m "$message">/dev/null
