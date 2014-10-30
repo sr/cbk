@@ -42,5 +42,6 @@ do
     )"
     repodir="$destdir/$user/$repo.git"
 
+    echo "git=$giturl dir=$repodir" >&2
     git-mirror "$giturl" "$repodir"
 done
