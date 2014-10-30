@@ -17,10 +17,11 @@ then
     exit 2
 fi
 
-# construct the api url for grabbing all repos
+# construct the various api url
 authparam="access_token=$token"
 apiurl="https://api.github.com"
 authurl="$apiurl/user?$authparam"
+orgsurl="$apiurl/user/orgs?$authparam"
 reposurl="$apiurl/user/repos?$authparam"
 
 # make sure we're authenticated
@@ -30,27 +31,49 @@ then
     exit 1
 fi
 
-# grab the last page number
-last_page=$(
-    headers "$reposurl" |
-    grep Link: |
-    cut -d"," -f2 |
-    cut -d"&" -f2 |
-    cut -d"=" -f2 |
-    cut -d">" -f1
-)
-if test -z "$last_page"
-then
-    echo >&2 "failed to get the last page number."
-    exit 1
-fi
+# list all repositories clone urls exposed at the given api
+list_repos() {
+    url="$1"
 
-# iterate through all pages and write the repos' clones urls to stdout
-for i in $(seq 1 $last_page)
+    # grab the last page number
+    last_page=$(
+        headers "$url" |
+        grep Link: |
+        cut -d"," -f2 |
+        cut -d"&" -f2 |
+        cut -d"=" -f2 |
+        cut -d">" -f1
+    )
+
+    # the Link header is omitted when there's only one page. default to 1
+    test -z "$last_page" && {
+        last_page="1"
+    }
+
+    # iterate through all pages and write the repos' clones urls to stdout
+    for i in $(seq 1 $last_page)
+    do
+        curl -s -f "$url&page=$i" |
+            grep clone_url |
+            cut -d" " -f6 |
+            sed -e "s/[\",]//g" |
+            tr ' ' '\n'
+    done
+}
+
+# write all of the user's repos clone urls
+list_repos "$reposurl"
+
+# iterate through all the organizations the user has access to
+curl -s -f "$orgsurl" |
+grep login |
+cut -d" " -f6 |
+sed -e "s/[\",]//g" |
+tr ' ' '\n' |
+grep -v boxen |
+while read line
 do
-    curl -s -f "$reposurl&page=$i" |
-        grep clone_url |
-        cut -d" " -f6 |
-        sed -e "s/[\",]//g" |
-        tr ' ' '\n'
+    # write all of the organization's repos clone urls
+    orgname="$line"
+    list_repos "$apiurl/orgs/$orgname/repos?$authparam"
 done
