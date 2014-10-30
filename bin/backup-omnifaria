@@ -1,17 +1,17 @@
 #!/bin/sh
-# Usage: backup-omnifaria
+# Usage: backup-omnifaria directory
 set -e
 
-: ${ARCHIVE_DIR:="$HOME/Documents/Omnifaria"}
+dir="$1"
 
-test -d "$ARCHIVE_DIR" || {
-    echo >&2 "$ARCHIVE_DIR directory not found"
+test -d "$dir" || {
+    echo >&2 "$dir directory not found"
     exit 1
 }
-cd "$ARCHIVE_DIR"
+cd "$dir"
 
 repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
-if test $? != 0 || test "$repo_check" != "$ARCHIVE_DIR";
+if test $? != 0 || test "$repo_check" != "$dir";
 then
     git init>/dev/null
 fi
