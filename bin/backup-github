@@ -34,12 +34,13 @@ github-repos "$user" "$token" | grep -v roko.git | grep -v jekyll-pages |
 while read line
 do
     giturl="$line"
-    name="$(
+    user="$(echo "$giturl" | cut -d"/" -f4)"
+    repo="$(
         echo "$giturl" |
         cut -d"/" -f5 |
         sed -e "s/.git$//g"
     )"
-    repodir="$destdir/$name.git"
+    repodir="$destdir/$user/$repo.git"
 
     git-mirror "$giturl" "$repodir"
 done
