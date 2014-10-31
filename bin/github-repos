@@ -1,8 +1,8 @@
 #!/bin/sh
 ## Usage: github-repos <user> <token>
 ##
-## Writes the HTTPS clone URLs of all GitHub repositories which are accessible
-## by the given GitHub user and token to stdout.
+## Writes the HTTPS clone URLs of all GitHub repositories accessible by the
+## given GitHub user and token to stdout.
 ##
 ## Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
 set -e
