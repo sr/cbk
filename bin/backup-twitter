@@ -97,6 +97,15 @@ then
     exit 1
 fi
 
+last_id=$(tail -n1 "$tweets" | jq '.id')
+old_count="$(jq -s '. | length' $tweets)"
+python ~/bin/twitter-backup.py \
+    -u "$user" \
+    -i "$last_id" \
+    -c ~/.backup-twitter.ini >> "$tweets"
+new_count="$(jq -s '. | length' $tweets)"
+echo "saved $(($new_count - $old_count)) new tweet(s)" >&2
+
 echo "backing up direct messages to $messages" >&2
 test -d "$messages" || mkdir "$messages"
 perl $HOME/bin/jwz-twitter-backup.pl --user "$user" "$messages"
