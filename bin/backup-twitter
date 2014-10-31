@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ Usage: backup-twitter <dest>
+#/ Usage: backup-twitter <user> <dest>
 #/        backup-twitter import <dest> <archives>
 set -e
 
@@ -18,6 +18,7 @@ else
 fi
 
 # parse and validate arguments
+user=
 import=
 dest=
 archives=
@@ -34,7 +35,10 @@ while [ $# -gt 0 ]; do
             shift
             shift ;;
         *)
-            dest="$1"
+            test $# -ne 2 && usage
+            user="$1"
+            dest="$2"
+            shift
             shift ;;
     esac
 done
@@ -53,14 +57,19 @@ then
     exit 1
 fi
 
-# where tweets are stored, one per-line, most recent last
+# where tweets and direct messages are saved
 tweets="$dest/tweets.json"
+messages="$dest/messages"
+
+# set this to avoid having to cd into the backup repository
+GIT_WORK_TREE="$dest"
+GIT_DIR="$dest/.git"
+export GIT_WORK_TREE GIT_DIR
 
 # initialize the git repository if necessary
 repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
 if test $? != 0 || test "$repo_check" != "$dest";
-then
-    git init "$dest">/dev/null
+then git init "$dest">/dev/null
 fi
 
 # import the archives into our tweets.json file and report status
@@ -81,9 +90,21 @@ test -n "$import" && {
 }
 
 # make sure the initial import is present
-if ! test -f "$tweets" || test $(jq -s '. | length') -eq 0;
+if ! test -f "$tweets" || test $(jq -s '. | length' "$tweets") -eq 0;
 then
     echo "Please download your archives from twitter.com and run:" \
         "\n$(basename $0) import $dest ~/Downloads/tweets/data/js/tweets" >&2
     exit 1
 fi
+
+echo "backing up direct messages to $messages" >&2
+test -d "$messages" || mkdir "$messages"
+perl $HOME/bin/jwz-twitter-backup.pl --user "$user" "$messages"
+
+# commit changes to git if any
+test -n "$(git status --porcelain)" && {
+    message="import tweets and direct messages of twitter.com/$user with"
+    message+=" $(basename $0)"
+    git add . >/dev/null
+    git commit -m "$message">/dev/null
+}
