@@ -27,7 +27,6 @@ ua="$ua AppleWebKit/537.77.4 (KHTML, like Gecko) Version/7.0.5 Safari/537.77.4"
 
 for i in $(seq 1 $pages_count); do
     wget -q \
-        --header="From: 'Simon Rozet' <me@simonrozet.com>" \
         --header="$ua" \
         --limit-rate=500k \
         --random-wait \
