@@ -1,0 +1,35 @@
+#!/bin/sh
+#/ Usage: backup-irclogs
+
+set -e
+
+destdir="$HOME/Documents/IRC Logs"
+
+# make sure the logs directory exists
+if ! test -d "$destdir"
+then
+    echo >&2 "not a directory: $destdir"
+    exit 1
+fi
+
+# set this to avoid having to cd into the backup repository
+GIT_WORK_TREE="$destdir"
+GIT_DIR="$destdir/.git"
+export GIT_WORK_TREE GIT_DIR
+
+# initial the archive git repository if needed
+repo_check="$(git rev-parse --show-toplevel 2>/dev/null)"
+if test $? != 0 || test "$repo_check" != "$destdir";
+then
+    git init>/dev/null
+fi
+
+# pull the irc logs from the remote
+betsy pull-irssi-logs >/dev/null
+
+# commit log updates
+test -n "$(git status --porcelain)" && {
+    message="synced logs from betsy1.ams3"
+    git add . >/dev/null
+    git commit -m "$message">/dev/null
+}
