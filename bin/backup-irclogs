@@ -25,6 +25,7 @@ then
 fi
 
 # pull the irc logs from the remote
+. "$HOME/.keychain/${HOSTNAME}-sh"
 betsy pull-irssi-logs >/dev/null
 
 # commit log updates
