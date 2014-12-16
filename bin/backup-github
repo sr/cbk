@@ -1,8 +1,8 @@
 #!/bin/sh
-## Usage: backup-github <directory>
-##
-## Mirror all GitHub repository into the given directory.
-## See Also: github-repos(1), git-mirror(1)
+#/ Usage: backup-github <directory>
+#/
+#/ Mirror all GitHub repository into the given directory.
+#/ See Also: github-repos(1), git-mirror(1)
 set -e
 
 destdir="$1"
@@ -10,7 +10,7 @@ destdir="$1"
 # usage and help
 if test $# -eq 0 || test -z "$destdir" || test "$destdir" = "--help"
 then
-    cat "$0" | grep '^##' | cut -c4- 1>&2
+    cat "$0" | grep '^#/' | cut -c4- 1>&2
     exit 2
 fi
 
