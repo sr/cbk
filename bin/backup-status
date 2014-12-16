@@ -1,0 +1,54 @@
+#!/bin/sh
+#/ Usage: backup-status
+#/ Write the status of cloud backups to standard output
+set -e
+
+clouds="
+github
+fastmail
+omnifaria
+irclogs
+"
+
+: ${MAILDIR:="${HOME}/Documents/Maildir"}
+
+for cloud in $clouds
+do
+    case "$cloud" in
+        github)
+            log="${BOXEN_LOG_DIR}/backup-github.log"
+            timestamp="$(date -r "$(stat -f "%m" "$log")" +"%Y-%m-%d")"
+            status="$(launchctl list | grep backup.github | cut -f2)"
+            lastline=$(tail -1 "$log" | cut -c1-70)
+            printf "%-10s%-12s%-3s%s\n" "github" "$timestamp" "$status" "$lastline"
+            ;;
+        fastmail)
+            timestamp="$(
+                git --git-dir="$MAILDIR/.git" \
+                    log --max-count=1 --format="%ad" --date=short
+            )"
+            log="${BOXEN_LOG_DIR}/backups/fastmail.log"
+            status="$(launchctl list | grep backup.fastmail | cut -f2)"
+            lastline=$(tail -1 "$log" | cut -c1-70)
+            printf "%-10s%-12s%-3s%s\n" "fastmail" "$timestamp" "$status" "$lastline"
+            ;;
+        omnifaria)
+            timestamp="$(
+                git --git-dir="${HOME}/Documents/Omnifaria/.git" \
+                    log --max-count=1 --format="%ad" --date=short
+            )"
+            log="${BOXEN_LOG_DIR}/backup-omnifaria.log"
+            status="$(launchctl list | grep backup.omnifaria | cut -f2)"
+            lastline=$(tail -1 "$log" | cut -c1-70)
+            printf "%-10s%-12s%-3s%s\n" "omnifaria" "$timestamp" "$status" "$lastline"
+            ;;
+        irclogs)
+            timestamp="$(
+                git --git-dir="${HOME}/Documents/IRC Logs/.git" \
+                    log --max-count=1 --format="%ad" --date=short
+            )"
+            log="${BOXEN_LOG_DIR}/backups/fastmail.log"
+            printf "%-10s%-12s\n" "irclogs" "$timestamp"
+            ;;
+    esac
+done
