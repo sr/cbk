@@ -1,6 +1,5 @@
 #!/bin/sh
 #/ Usage: backup-irclogs
-
 set -e
 
 destdir="$HOME/Documents/IRC Logs"
