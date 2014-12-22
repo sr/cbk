@@ -20,35 +20,35 @@ do
             timestamp="$(date -r "$(stat -f "%m" "$log")" +"%Y-%m-%d")"
             status="$(launchctl list | grep backup.github | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-12s%-3s%s\n" "github" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-3s%s\n" "github" "$timestamp" "$status" "$lastline"
             ;;
         fastmail)
             timestamp="$(
                 git --git-dir="$MAILDIR/.git" \
-                    log --max-count=1 --format="%ad" --date=short
+                    log --max-count=1 --format="%ad" --date=relative
             )"
             log="${BOXEN_LOG_DIR}/backups/fastmail.log"
             status="$(launchctl list | grep backup.fastmail | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-12s%-3s%s\n" "fastmail" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-3s%s\n" "fastmail" "$timestamp" "$status" "$lastline"
             ;;
         omnifaria)
             timestamp="$(
                 git --git-dir="${HOME}/Documents/Omnifaria/.git" \
-                    log --max-count=1 --format="%ad" --date=short
+                    log --max-count=1 --format="%ad" --date=relative
             )"
             log="${BOXEN_LOG_DIR}/backup-omnifaria.log"
             status="$(launchctl list | grep backup.omnifaria | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-12s%-3s%s\n" "omnifaria" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-3s%s\n" "omnifaria" "$timestamp" "$status" "$lastline"
             ;;
         irclogs)
             timestamp="$(
                 git --git-dir="${HOME}/Documents/IRC Logs/.git" \
-                    log --max-count=1 --format="%ad" --date=short
+                    log --max-count=1 --format="%ad" --date=relative
             )"
             log="${BOXEN_LOG_DIR}/backups/fastmail.log"
-            printf "%-10s%-12s\n" "irclogs" "$timestamp"
+            printf "%-10s%-15s\n" "irclogs" "$timestamp"
             ;;
     esac
 done
