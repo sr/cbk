@@ -16,11 +16,11 @@ for cloud in $clouds
 do
     case "$cloud" in
         github)
-            log="${BOXEN_LOG_DIR}/backup-github.log"
+            log="${BOXEN_LOG_DIR}/backups/github.log"
             timestamp="$(date -r "$(stat -f "%m" "$log")" +"%Y-%m-%d")"
             status="$(launchctl list | grep backup.github | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-15s%-3s%s\n" "github" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-5s%s\n" "github" "$timestamp" "$status" "$lastline"
             ;;
         fastmail)
             timestamp="$(
@@ -30,25 +30,26 @@ do
             log="${BOXEN_LOG_DIR}/backups/fastmail.log"
             status="$(launchctl list | grep backup.fastmail | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-15s%-3s%s\n" "fastmail" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-5s%s\n" "fastmail" "$timestamp" "$status" "$lastline"
             ;;
         omnifaria)
             timestamp="$(
                 git --git-dir="${HOME}/Documents/Omnifaria/.git" \
                     log --max-count=1 --format="%ad" --date=relative
             )"
-            log="${BOXEN_LOG_DIR}/backup-omnifaria.log"
+            log="${BOXEN_LOG_DIR}/backups/omnifaria.log"
             status="$(launchctl list | grep backup.omnifaria | cut -f2)"
             lastline=$(tail -1 "$log" | cut -c1-70)
-            printf "%-10s%-15s%-3s%s\n" "omnifaria" "$timestamp" "$status" "$lastline"
+            printf "%-10s%-15s%-5s%s\n" "omnifaria" "$timestamp" "$status" "$lastline"
             ;;
         irclogs)
             timestamp="$(
                 git --git-dir="${HOME}/Documents/IRC Logs/.git" \
                     log --max-count=1 --format="%ad" --date=relative
             )"
-            log="${BOXEN_LOG_DIR}/backups/fastmail.log"
-            printf "%-10s%-15s\n" "irclogs" "$timestamp"
+            status="$(launchctl list | grep backup.irclogs | cut -f2)"
+            log="${BOXEN_LOG_DIR}/backups/irclogs.log"
+            printf "%-10s%-15s%-5s%s\n" "irclogs" "$timestamp" "$status" ""
             ;;
     esac
 done
