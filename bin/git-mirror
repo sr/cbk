@@ -1,8 +1,8 @@
 #!/bin/sh
-## Usage: git-mirror <repository> <directory>
-##
-## Mirror the given git URL into the given directory, setting up the destination
-## repository if necessary before pulling in changes from the remote.
+#/ Usage: git-mirror <repository> <directory>
+#/
+#/ Mirror the given git URL into the given directory, setting up the destination
+#/ repository if necessary before pulling in changes from the remote.
 set -e
 
 repourl="$1"
@@ -11,7 +11,7 @@ destdir="$2"
 # usage and help
 if test $# -eq 0 || test -z "$repourl" || test -z "$destdir"
 then
-    cat "$0" | grep '^##' | cut -c4- 1>&2
+    cat "$0" | grep '^#/' | cut -c4- 1>&2
     exit 1
 fi
 
