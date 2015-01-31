@@ -10,7 +10,7 @@ destdir="$1"
 # usage and help
 if test $# -eq 0 || test -z "$destdir" || test "$destdir" = "--help"
 then
-    cat "$0" | grep '^#/' | cut -c4- 1>&2
+    grep '^#/' < "$0" | cut -c4- 1>&2
     exit 2
 fi
 
