@@ -5,6 +5,8 @@
 #/ See Also: github-repos(1), git-mirror(1)
 set -e
 
+set -- "/Users/sr/Documents/GitHub"
+
 destdir="$1"
 
 # usage and help
@@ -30,7 +32,10 @@ then
     exit 1
 fi
 
-github-repos "$user" "$token" | grep -v roko.git | grep -v jekyll-pages |
+github-repos "$user" "$token" |
+grep -v roko.git |
+grep -v jekyll-pages |
+grep -v devspool |
 while read line
 do
     giturl="$line"
