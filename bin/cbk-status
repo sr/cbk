@@ -9,15 +9,20 @@ lastrun="never"
 status="-"
 lastline=""
 
-# set the last run time (relative) using the repo's HEAD commit
-test -d "$repo" && {
+# for github use the mtime of the log to get the last run time
+if test "$cloud" = "github" && test -f "$log"
+then
+    lastrun="$(date -r "$(stat -f "%m" "$log")" +"%Y-%m-%d")"
+# otherwise use the repo's HEAD commit
+elif test -d "$repo/.git"
+then
     lastrun="$(
     git --git-dir="${repo}/.git" \
         log --max-count=1 --format="%ad" --date=relative
     )"
-}
+fi
 
-# grab the last line of the log
+# grab the last line of the log when present
 test -f "$log" && {
     lastline="$(tail -1 "$log" | cut -c1-70)"
 }
