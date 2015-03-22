@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+cloud="$1"
+repo="$2"
+log="$3"
+
+# default values
+lastrun="never"
+status="-"
+lastline=""
+
+# set the last run time (relative) using the repo's HEAD commit
+test -d "$repo" && {
+    lastrun="$(
+    git --git-dir="${repo}/.git" \
+        log --max-count=1 --format="%ad" --date=relative
+    )"
+}
+
+# grab the last line of the log
+test -f "$log" && {
+    lastline="$(tail -1 "$log" | cut -c1-70)"
+}
+
+# get the exit status of the corresponding launchd agent
+if launchctl list | grep -q "backup.${1}"
+then status="$(launchctl list | grep backup.${1} | cut -f2)"
+fi
+
+# write status info to stdout
+printf "%-10s%-15s%-5s%s\n" "$cloud" "$lastrun" "$status" "$lastline"
