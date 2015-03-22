@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e
+
+cloud="$1"
+destdir=""
+
+case "$cloud" in
+    github)
+        set -- "$CBK_GITHUB_DIR"
+        ;;
+    omnifaria)
+        set -- "$CBK_OMNIFARIA_DIR"
+        ;;
+    fastmail)
+        set -- "$CBK_FASTMAIL_DIR"
+        ;;
+    carddav)
+        set -- "$CBK_CARDDAV_DIR"
+        ;;
+    *)
+        echo >&2 "cloud not supported: $cloud"
+        exit 1
+        ;;
+esac
+
+# make sure the backup directory exists
+destdir="$1"
+if ! test -d "$destdir"
+then
+    echo >&2 "destination directory doesn't exists: $destdir"
+    exit 1
+fi
+
+backup-$cloud "$destdir" 2>&1 | tee -a "${CBK_LOG_DIR}/${cloud}.log"
