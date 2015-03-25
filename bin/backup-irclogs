@@ -2,14 +2,7 @@
 #/ Usage: backup-irclogs
 set -e
 
-destdir="$HOME/Documents/IRC Logs"
-
-# make sure the logs directory exists
-if ! test -d "$destdir"
-then
-    echo >&2 "not a directory: $destdir"
-    exit 1
-fi
+destdir="$1"
 
 # set this to avoid having to cd into the backup repository
 GIT_WORK_TREE="$destdir"
