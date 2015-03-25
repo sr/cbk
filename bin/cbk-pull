@@ -17,6 +17,9 @@ case "$cloud" in
     carddav)
         set -- "$CBK_CARDDAV_DIR"
         ;;
+    irclogs)
+        set -- "$CBK_IRCLOGS_DIR"
+        ;;
     *)
         echo >&2 "cloud not supported: $cloud"
         exit 1
