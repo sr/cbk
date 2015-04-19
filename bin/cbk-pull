@@ -18,7 +18,9 @@ case "$cloud" in
         set -- "$CBK_CARDDAV_DIR"
         ;;
     irclogs)
-        set -- "$CBK_IRCLOGS_DIR"
+        destdir="$CBK_IRCLOGS_DIR"
+        export LOGS_DIR="$destdir"
+        exec cbk-gitbackup "$destdir" -- betsy pull-irssi-logs
         ;;
     *)
         echo >&2 "cloud not supported: $cloud"
