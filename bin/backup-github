@@ -36,6 +36,7 @@ github-repos "$user" "$token" |
 grep -v roko.git |
 grep -v jekyll-pages |
 grep -v devspool |
+grep -v benburkert |
 while read line
 do
     giturl="$line"
