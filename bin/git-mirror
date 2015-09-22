@@ -8,18 +8,20 @@ set -e
 repourl="$1"
 destdir="$2"
 
-# usage and help
+# show usage when arguments are missing
 if test $# -eq 0 || test -z "$repourl" || test -z "$destdir"
 then
     cat "$0" | grep '^#/' | cut -c4- 1>&2
-    exit 1
+    exit 2
 fi
 
 # perform the initial clone if the mirror doesn't exist yet
-if ! test -d "$destdir"
-then
-    git clone -q --mirror "$repourl" "$destdir">/dev/null
-fi
+test -d "$destdir" ||
+git clone -q --mirror "$repourl" "$destdir">/dev/null
 
 # sync changes from the remote repository
-git --git-dir="$destdir" fetch -ap origin
+git --git-dir="$destdir" fetch -ap --quiet origin
+
+# run gc and repack to optimize repository
+git --git-dir="$destdir" gc --quiet --aggressive
+git --git-dir="$destdir" repack --quiet
