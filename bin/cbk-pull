@@ -1,39 +1,10 @@
 #!/bin/sh
+#/ Usage: cbk-pull
+#/ Pull down cloud data onto the local machine.
 set -e
 
-cloud="$1"
-destdir=""
+cd $(dirname "$0")/..
+. share/cbk/cbk-config
 
-case "$cloud" in
-    github)
-        set -- "$CBK_GITHUB_DIR"
-        ;;
-    omnifaria)
-        set -- "$CBK_OMNIFARIA_DIR"
-        ;;
-    fastmail)
-        set -- "$CBK_FASTMAIL_DIR"
-        ;;
-    carddav)
-        set -- "$CBK_CARDDAV_DIR"
-        ;;
-    irclogs)
-        destdir="$CBK_IRCLOGS_DIR"
-        export LOGS_DIR="$destdir"
-        exec cbk-gitbackup "$destdir" -- betsy pull-irssi-logs
-        ;;
-    *)
-        echo >&2 "cloud not supported: $cloud"
-        exit 1
-        ;;
-esac
-
-# make sure the backup directory exists
-destdir="$1"
-if ! test -d "$destdir"
-then
-    echo >&2 "destination directory doesn't exists: $destdir"
-    exit 1
-fi
-
-backup-$cloud "$destdir" 2>&1 | tee -a "${CBK_LOG_DIR}/${cloud}.log"
+# Pull down mirrors of all accessible GitHub repositories.
+cbk-pull-github

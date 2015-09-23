@@ -1,0 +1,24 @@
+#!/bin/sh
+#/ Usage: . cbk-config
+set -e
+
+# Add porcelain utilities to the PATH
+export PATH="$(pwd)/share/cbk:$PATH"
+
+# The base directory for all cloud backups.
+: ${CBK_DATA_DIR:="${HOME}/data"}
+
+if [ ! -d "$CBK_DATA_DIR" ]; then
+    echo "The data directory set in CBK_DATA_DIR does not exists." 1>&2
+    exit 1
+fi
+
+# The locations of the individual cloud backups
+: ${CBK_FASTMAIL_IMAP_DIR:="${CBK_DATA_DIR}/fastmail-imap"}
+: ${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddv"}
+: ${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}
+: ${CBK_IRCLOGS_DIR:="${CBK_DATA_DIR}/irclogs"}
+export CBK_FASTMAIL_IMAP_DIR \
+    CBK_FASTMAIL_CARDDAV_DIR \
+    CBK_GITHUB_DIR \
+    CBK_IRCLOGS_DIR

@@ -1,0 +1,41 @@
+#!/bin/sh
+#/ Usage: cbk-pull-github
+#/
+#/ Mirror all GitHub repository into a repository. This is typically not
+#/ invoked directly.
+#/
+#/ See Also: github-repos(1), git-mirror(1)
+set -e
+
+abort() {
+    echo "at=cbk-pull-github error=\"$@\"" 1>&2
+    exit 1
+}
+
+# Ensure the base github directory exists
+[ ! -d "$CBK_GITHUB_DIR" ] &&
+abort "the directory set in CBK_GITHUB_DIR does not exist"
+
+# Make sure the auth credentials for the GitHub API are set
+[ -z "$CBK_GITHUB_USER" ] && abort "CBK_GITHUB_USER not set"
+[ -z "$CBK_GITHUB_TOKEN" ] && abort "CBK_GITHUB_TOKEN not set"
+
+# Grab the list of all repositories this set of credentials has access to
+github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
+grep -v roko.git |
+grep -v jekyll-pages |
+grep -v devspool |
+grep -v benburkert |
+while read line; do
+    giturl="$line"
+    user="$(echo "$giturl" | cut -d"/" -f4)"
+    repo="$(
+        echo "$giturl" |
+        cut -d"/" -f5 |
+        sed -e "s/.git$//g"
+    )"
+    repodir="$CBK_GITHUB_DIR/$user/$repo.git"
+
+    echo "at=cbk-pull-github git=$giturl dir=$repodir" 1>&2
+    git-mirror "$giturl" "$repodir"
+done
