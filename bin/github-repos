@@ -28,7 +28,7 @@ reposurl="$apiurl/user/repos?$authparam"
 if ! headers "$authurl" | grep -q "Status: 200 OK"
 then
     echo "github-repos: Authentication failed. Check the given user and " \
-        "are valid." 1>&2
+        "token are valid." 1>&2
     exit 1
 fi
 

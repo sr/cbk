@@ -1,10 +1,10 @@
 #!/bin/sh
 #/ Usage: cbk-pull
-#/ Pull down cloud data onto the local machine.
+#/ Pull down cloud data onto the local host.
 set -e
 
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
-# Pull down mirrors of all accessible GitHub repositories.
+# Mirror all accessible GitHub repositories.
 cbk-pull-github
