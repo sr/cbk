@@ -11,10 +11,11 @@ GIT_WORK_TREE="$MAILDIR"
 GIT_DIR="$MAILDIR/.git"
 export GIT_WORK_TREE GIT_DIR
 
-# commit changes
+# commit changes if any
 test -n "$(git status --porcelain)" && {
     git add . >/dev/null
     git commit --allow-empty-message --no-edit >/dev/null
 }
 
-git gc
+git gc --aggressive
+git repack
