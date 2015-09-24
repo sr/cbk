@@ -30,10 +30,12 @@ export CBK_FASTMAIL_IMAP_DIR \
     CBK_IRCLOGS_DIR
 
 # The cache directory used by tarsnap
-export CBK_TARSNAP_CACHE_DIR="${CBK_ROOT_DIR}/cache"
+: ${CBK_TARSNAP_CACHE_DIR:="${CBK_ROOT_DIR}/cache"}
+export CBK_TARSNAP_CACHE_DIR
 
 # The key file used for creating the tarsnap archives
-export CBK_TARSNAP_KEYFILE="/usr/local/etc/tarsnap.key"
+: ${CBK_TARSNAP_KEYFILE="/usr/local/etc/tarsnap.key"}
+export CBK_TARSNAP_KEYFILE
 
 # Source in configuration file.
 . "$CBK_CONFIG"
