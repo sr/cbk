@@ -5,18 +5,21 @@ set -e
 # Add porcelain utilities to the PATH
 export PATH="$(pwd)/share/cbk:$PATH"
 
-# The root directory for all cbk data.
+# The root directory where all cbk data is kept
 : ${CBK_ROOT_DIR:="$HOME"}
 
-# The base directory for all cloud backups.
+# The base directory for all cloud backups
 : ${CBK_DATA_DIR:="${CBK_ROOT_DIR}/data"}
+
+# The location of the configuration file
+: ${CBK_CONFIG:="/usr/local/etc/cbk.conf"}
 
 if [ ! -d "$CBK_DATA_DIR" ]; then
     echo "The data directory set in CBK_DATA_DIR does not exists." 1>&2
     exit 1
 fi
 
-# The locations of the individual cloud backups
+# The locations of the individual backup data directories
 : ${CBK_FASTMAIL_IMAP_DIR:="${CBK_DATA_DIR}/fastmail-imap"}
 : ${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddv"}
 : ${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}
@@ -31,3 +34,6 @@ export CBK_TARSNAP_CACHE_DIR="${CBK_ROOT_DIR}/cache"
 
 # The key file used for creating the tarsnap archives
 export CBK_TARSNAP_KEYFILE="/usr/local/etc/tarsnap.key"
+
+# Source in configuration file.
+. "$CBK_CONFIG"
