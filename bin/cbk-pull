@@ -10,16 +10,16 @@ cd $(dirname "$0")/..
 start=$(date +"%s")
 echo "at=start cloud=github" 1>&2
 cbk-pull-github
-echo "at=finish cloud=github duration=$(($(dat +'%s') - $start))s" 1>&2
+echo "at=finish cloud=github duration=$(($(date +'%s') - $start))s" 1>&2
 
 # Fetch email data from Fastmail over IMAP
 start=$(date +"%s")
 echo "at=start cloud=fastmail-imap" 1>&2
 cbk-pull-fastmail-imap
-echo "at=finish cloud=fastmail-imap duration=$(($(dat +"%s") - $start))s" 1>&2
+echo "at=finish cloud=fastmail-imap duration=$(($(date +"%s") - $start))s" 1>&2
 
 # Copy irc chat logs from the local machine
 start=$(date +"%s")
 echo "at=start cloud=irclogs" 1>&2
 cbk-pull-irclogs
-echo "at=finish cloud=irclogs duration=$(($(dat +"%s") - $start))s" 1>&2
+echo "at=finish cloud=irclogs duration=$(($(date +"%s") - $start))s" 1>&2
