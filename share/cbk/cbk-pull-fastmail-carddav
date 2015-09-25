@@ -49,23 +49,5 @@ PATH="$CBK_VDIRSYNCER_DIR/bin:$PATH"
 # Pull down CardDAV data from the remote
 vdirsyncer sync
 
-# Setup git repository access
-GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
-GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
-export GIT_WORK_TREE GIT_DIR
-
-git config user.name "$(basename $0)"
-git config user.email "cbk@$(hostname -f)"
-
-# Commit changes if any
-test -n "$(git status --porcelain)" && {
-    git add . >/dev/null
-    git commit \
-        --author="$(whoami)@$(hostname -f)" \
-        --allow-empty-message \
-        --no-edit >/dev/null
-}
-
-# Optimize repository disk usage by forcing a GC and repack every time
-git gc --aggressive
-git repack
+# Commit changes to the git repository.
+cbk-git-commit "$0" "$CBK_FASTMAIL_CARDDAV_DIR"
