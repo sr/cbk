@@ -5,15 +5,24 @@ set -e
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
-hostname="$(hostname -f)"
-archivetype="daily"
-timestamp="$(date -u "+%Y-%m-%d_%H:%M:%S")"
-archive="${hostname}-${archivetype}-${timestamp}-github"
+for dir in $(find "$CBK_DATA_DIR" -maxdepth 1 -type d | tail -n+2 | sort); do
+    cloud="$(basename "$dir")"
+    hostname="$(hostname -f)"
+    archivetype="daily"
+    timestamp="$(date -u "+%Y-%m-%d_%H:%M:%S")"
+    archive="${hostname}-${archivetype}-${timestamp}-$cloud"
 
-exec tarsnap -c \
-    --keyfile "$CBK_TARSNAP_KEYFILE" \
-    --cachedir "$CBK_TARSNAP_CACHE_DIR" \
-    -f "$archive" \
-    -C / \
-    -v \
-    "$CBK_GITHUB_DIR"
+    start=$(date +"%s")
+    echo "at=start command=$(basename $0) cloud=$cloud archive=$archive" 1>&2
+
+    tarsnap -c \
+        --keyfile "$CBK_TARSNAP_KEYFILE" \
+        --cachedir "$CBK_TARSNAP_CACHE_DIR" \
+        -f "$archive" \
+        -C / \
+        -v \
+        "$dir"
+
+    echo "at=finish command=$(basename $0) cloud=github" \
+        "duration=$(($(date +'%s') - $start))s" 1>&2
+done
