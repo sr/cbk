@@ -6,5 +6,8 @@ set -e
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
-# Mirror all accessible GitHub repositories.
+# Mirror all accessible GitHub repositories
 cbk-pull-github
+
+# Fetch email data from Fastmail over IMAP
+cbk-pull-fastmail-imap
