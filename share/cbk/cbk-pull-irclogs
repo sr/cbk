@@ -6,21 +6,8 @@ if [ -z "$CBK_IRCLOGS_SOURCE" ]; then
     exit 1
 fi
 
+# Copy the log files
 rsync -avz "$CBK_IRCLOGS_SOURCE/" "$CBK_IRCLOGS_DIR/"
 
-GIT_WORK_TREE="$CBK_IRCLOGS_DIR"
-GIT_DIR="$CBK_IRCLOGS_DIR/.git"
-export GIT_WORK_TREE GIT_DIR
-
-git config user.name "$(basename $0)"
-git config user.email "cbk@$(hostname -f)"
-
-test -n "$(git status --porcelain)" && {
-    git add . >/dev/null
-    git commit \
-        --allow-empty-message \
-        --no-edit >/dev/null
-}
-
-git gc --aggressive
-git repack
+# Commit changes to the git repository
+cbk-git-commit "$0" "$CBK_IRCLOGS_DIR"
