@@ -16,6 +16,15 @@ VDIRSYNCER_CONFIG="$(mktemp -t vdirsyncerXXXX)"
 trap "rm -f $VDIRSYNCER_CONFIG" EXIT
 export VDIRSYNCER_CONFIG
 
+# Fastmail requires using username in the form of user+Default@fastmail.fm to
+# access CardDAV data.
+#
+# See https://www.fastmail.com/help/technical/servernamesandports.html#contacts
+username="$(
+    echo "$CBK_FASTMAIL_USERNAME" |
+    sed -e "s/\(.*\)@/\1+Default@/g"
+)"
+
 cat > "$VDIRSYNCER_CONFIG" <<EOS
 [general]
 status_path = ~/.vdirsyncer/status/
@@ -25,21 +34,19 @@ status_path = ~/.vdirsyncer/status/
 a = carddav_local
 b = carddav_remote
 
-collections = ["dav/addressbooks/user/${CBK_FASTMAIL_USERNAME}/Default"]
 conflict_resolution = null
 
 [storage carddav_local]
-create = true
 type = filesystem
-path = ${CBK_FASTMAIL_CARDDAV_DIR}
+path = ${CBK_FASTMAIL_CARDDAV_DIR}/
 fileext = .vcf
 encoding = utf-8
 
 [storage carddav_remote]
 type = carddav
-url = https://carddav.messagingengine.com/
+url = https://carddav.messagingengine.com/dav/addressbooks/user/${CBK_FASTMAIL_USERNAME}/Default
 auth = guess
-username = ${CBK_FASTMAIL_USERNAME}
+username = $username
 password = ${CBK_FASTMAIL_PASSWORD}
 EOS
 
