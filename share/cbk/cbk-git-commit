@@ -1,0 +1,34 @@
+#!/bin/sh
+#/ Usage: cbk-git-commit <program> <directory>
+#/ Commit any changes made by the given program in the given git working
+#/ directory.
+set -e
+
+program="$1"
+directory="$2"
+
+if [ ! -d "$directory" ]; then
+    echo "at=error command=cbk-git-commit msg=\"directory not found\"" \
+        "directory=\"$directory\"" 1>&2
+fi
+
+# Setup git repository access
+GIT_WORK_TREE="$directory"
+GIT_DIR="$directory/.git"
+export GIT_WORK_TREE GIT_DIR
+
+git config user.name "$(basename "$program")"
+git config user.email "cbk@$(hostname -f)"
+
+# Commit changes if any
+test -n "$(git status --porcelain)" && {
+    git add . >/dev/null
+    git commit \
+        --author="$(whoami)@$(hostname -f)" \
+        --allow-empty-message \
+        --no-edit >/dev/null
+}
+
+# Optimize repository disk usage by forcing a GC and repack every time
+git gc --aggressive
+git repack
