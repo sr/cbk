@@ -18,6 +18,13 @@ echo "at=start cloud=fastmail-imap" 1>&2
 cbk-pull-fastmail-imap
 echo "at=finish cloud=fastmail-imap duration=$(($(date +"%s") - $start))s" 1>&2
 
+# Fetch contact/CardDAV data from Fastmail
+start=$(date +"%s")
+echo "at=start cloud=fastmail-carddav" 1>&2
+cbk-pull-fastmail-carddav
+echo "at=finish cloud=fastmail-carddav" \
+    "duration=$(($(date +"%s") - $start))s" 1>&2
+
 # Copy irc chat logs from the local machine
 start=$(date +"%s")
 echo "at=start cloud=irclogs" 1>&2
