@@ -35,7 +35,8 @@ while read line; do
         sed -e "s/.git$//g"
     )"
     repodir="$CBK_GITHUB_DIR/$user/$repo.git"
+    cloneurl="https://$CBK_GITHUB_USER:$CBK_GITHUB_TOKEN@github.com/$user/$repo"
 
     echo "at=cbk-pull-github git=$giturl dir=$repodir" 1>&2
-    git-mirror "$giturl" "$repodir"
+    git-mirror "$cloneurl" "$repodir"
 done
