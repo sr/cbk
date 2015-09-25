@@ -1,5 +1,0 @@
-#!/bin/sh
-#/ Usage: backup-irclogs
-set -e
-export LOGS_DIR="$1"
-cbk-gitbackup "$1" -- betsy pull-irssi-logs

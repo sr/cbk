@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+if [ -z "$CBK_IRCLOGS_SOURCE" ]; then
+    echo "at=cbk-pull-github error=\"CBK_IRCLOGS_SOURCE not set\"" 1>&2
+    exit 1
+fi
+
+rsync -avz "$CBK_IRCLOGS_SOURCE/" "$CBK_IRCLOGS_DIR/"
+
+GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
+GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
+export GIT_WORK_TREE GIT_DIR
+
+test -n "$(git status --porcelain)" && {
+    git add . >/dev/null
+    git commit --allow-empty-message --no-edit >/dev/null
+}
+
+git gc --aggressive
+git repack
