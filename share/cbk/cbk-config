@@ -21,7 +21,7 @@ fi
 
 # The locations of the individual backup data directories
 : ${CBK_FASTMAIL_IMAP_DIR:="${CBK_DATA_DIR}/fastmail-imap"}
-: ${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddv"}
+: ${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddav"}
 : ${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}
 : ${CBK_IRCLOGS_DIR:="${CBK_DATA_DIR}/irclogs"}
 export CBK_FASTMAIL_IMAP_DIR \
