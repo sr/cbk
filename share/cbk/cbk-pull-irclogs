@@ -8,8 +8,8 @@ fi
 
 rsync -avz "$CBK_IRCLOGS_SOURCE/" "$CBK_IRCLOGS_DIR/"
 
-GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
-GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
+GIT_WORK_TREE="$CBK_IRCLOGS_DIR"
+GIT_DIR="$CBK_IRCLOGS_DIR/.git"
 export GIT_WORK_TREE GIT_DIR
 
 git config user.name "$(basename $0)"
