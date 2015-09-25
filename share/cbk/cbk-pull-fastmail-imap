@@ -1,0 +1,53 @@
+#!/bin/sh
+set -e
+
+config="$(mktemp -t offlineimaprc)"
+trap "rm $config" EXIT
+
+# Write offlineimap configuration to temporary file
+cat > "$config" <<EOF
+[general]
+accounts = Fastmail
+ui = basic
+fsync = false
+maxconnections = 25
+
+[Account Fastmail]
+localrepository = Localhost
+remoterepository = Fastmail
+status_backend = plain
+maxsize = 1000000000
+
+[Repository Localhost]
+type = Maildir
+localfolders = $CBK_FASTMAIL_IMAP_DIR
+
+[Repository Fastmail]
+type = IMAP
+remotehost = mail.messagingengine.com
+remoteport = 993
+ssl = true
+sslcacertfile = ~/etc/certs/DigiCertHighAssuranceEVRootCA.crt
+cert_fingerprint = 958b1601563aef92607a41eb5bad22e3cace8431
+remoteuser = $CBK_FASTMAIL_USERNAME
+remotepasseval = $CBK_FASTMAIL_PASSWORD
+readonly = True
+EOF
+
+# one way sync from fastmail.com
+offlineimap -c "$config"
+
+# Setup git repository access
+GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
+GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
+export GIT_WORK_TREE GIT_DIR
+
+# Commit changes if any
+test -n "$(git status --porcelain)" && {
+    git add . >/dev/null
+    git commit --allow-empty-message --no-edit >/dev/null
+}
+
+# Optimize repository by forcing a GC and repack each time
+git gc --aggressive
+git repack
