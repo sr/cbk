@@ -44,7 +44,10 @@ export GIT_WORK_TREE GIT_DIR
 # Commit changes if any
 test -n "$(git status --porcelain)" && {
     git add . >/dev/null
-    git commit --allow-empty-message --no-edit >/dev/null
+    git commit \
+        --author="$(whoami)@$(hostname -f)" \
+        --allow-empty-message \
+        --no-edit >/dev/null
 }
 
 # Optimize repository by forcing a GC and repack each time
