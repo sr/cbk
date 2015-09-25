@@ -41,6 +41,9 @@ GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
 GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
 export GIT_WORK_TREE GIT_DIR
 
+git config user.name "$(basename $0)"
+git config user.email "cbk@$(hostname -f)"
+
 # Commit changes if any
 test -n "$(git status --porcelain)" && {
     git add . >/dev/null
