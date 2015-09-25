@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-cd $(dirname "$0")/..
+cd $(dirname "$0")/../..
 . share/cbk/cbk-config
 
 # Make sure the vdirsyncer executable is available
