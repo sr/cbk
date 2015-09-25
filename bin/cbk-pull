@@ -7,7 +7,13 @@ cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
 # Mirror all accessible GitHub repositories
+start=$(date +"%s")
+echo "at=start cloud=github" 1>&2
 cbk-pull-github
+echo "at=finish cloud=github duration=$(($(dat +'%s') - $start))s" 1>&2
 
 # Fetch email data from Fastmail over IMAP
+start=$(date +"%s")
+echo "at=start cloud=fastmail-imap" 1>&2
 cbk-pull-fastmail-imap
+echo "at=finish cloud=fastmail-imap duration=$(($(dat +"%s") - $start))s" 1>&2
