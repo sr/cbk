@@ -34,7 +34,7 @@ status_path = ~/.vdirsyncer/status/
 a = carddav_local
 b = carddav_remote
 
-conflict_resolution = null
+conflict_resolution = "b wins"
 
 [storage carddav_local]
 type = filesystem
@@ -46,6 +46,7 @@ encoding = utf-8
 type = carddav
 url = https://carddav.messagingengine.com/dav/addressbooks/user/${CBK_FASTMAIL_USERNAME}/Default
 auth = guess
+read_only = True
 username = $username
 password = ${CBK_FASTMAIL_PASSWORD}
 EOS
