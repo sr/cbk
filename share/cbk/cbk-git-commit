@@ -18,7 +18,7 @@ GIT_DIR="$directory/.git"
 export GIT_WORK_TREE GIT_DIR
 
 git config user.name "$(basename "$program")"
-git config user.email "cbk@$(hostname -f)"
+git config user.email "$(whoami)@$(hostname -f)"
 
 # Commit changes if any
 test -n "$(git status --porcelain)" && {
