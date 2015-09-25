@@ -1,0 +1,71 @@
+#!/bin/sh
+set -e
+
+cd $(dirname "$0")/..
+. share/cbk/cbk-config
+
+# Make sure the vdirsyncer executable is available
+if [ ! -x "$CBK_VDIRSYNCER_DIR/bin/vdirsyncer" ]; then
+    echo "at=error command=cbk-pull-fastmail-carddav" \
+        "msg=\"vdirsyncer executable not found\"" 1>&2
+    exit 1
+fi
+
+# Write configuration to a temporary file and tell vdirsyncer to use it
+VDIRSYNCER_CONFIG="$(mktemp -t vdirsyncerXXXX)"
+trap "rm -f $VDIRSYNCER_CONFIG" EXIT
+export VDIRSYNCER_CONFIG
+
+cat > "$VDIRSYNCER_CONFIG" <<EOS
+[general]
+status_path = ~/.vdirsyncer/status/
+
+# CARDDAV
+[pair contacts]
+a = carddav_local
+b = carddav_remote
+
+collections = ["dav/addressbooks/user/${CBK_FASTMAIL_USERNAME}/Default"]
+conflict_resolution = null
+
+[storage carddav_local]
+create = true
+type = filesystem
+path = ${CBK_FASTMAIL_CARDDAV_DIR}
+fileext = .vcf
+encoding = utf-8
+
+[storage carddav_remote]
+type = carddav
+url = https://carddav.messagingengine.com/
+auth = guess
+username = ${CBK_FASTMAIL_USERNAME}
+password = ${CBK_FASTMAIL_PASSWORD}
+EOS
+
+# Put the vdirsyncer executable in our PATH
+PATH="$CBK_VDIRSYNCER_DIR/bin:$PATH"
+
+# Pull down CardDAV data from the remote
+vdirsyncer sync
+
+# Setup git repository access
+GIT_WORK_TREE="$CBK_FASTMAIL_IMAP_DIR"
+GIT_DIR="$CBK_FASTMAIL_IMAP_DIR/.git"
+export GIT_WORK_TREE GIT_DIR
+
+git config user.name "$(basename $0)"
+git config user.email "cbk@$(hostname -f)"
+
+# Commit changes if any
+test -n "$(git status --porcelain)" && {
+    git add . >/dev/null
+    git commit \
+        --author="$(whoami)@$(hostname -f)" \
+        --allow-empty-message \
+        --no-edit >/dev/null
+}
+
+# Optimize repository disk usage by forcing a GC and repack every time
+git gc --aggressive
+git repack

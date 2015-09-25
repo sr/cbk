@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e
-VDIRSYNCER="$HOME/tmp/vdirsyncer_env/bin/vdirsyncer"
-DESTDIR="$1"
-cbk-gitbackup "$DESTDIR" -- "$VDIRSYNCER sync"
