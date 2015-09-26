@@ -1,0 +1,23 @@
+#!/bin/sh
+fpm \
+    -s dir \
+    -n cbk \
+    -t deb \
+    --version 0.0.1 \
+    --maintainer "Simon Rozet <me@simonrozet.com>" \
+    --license "MIT" \
+    --category "utils" \
+    --architecture "all" \
+    --url "https://github.com/sr/cbk" \
+    -d "coreutils >= 8.21" \
+    -d "git >= 1.9.1" \
+    -d "offlineimap >= 6.5.4" \
+    -d "rsync >= 3.1.0" \
+    -d "sed >= 4.2.2" \
+    --exclude .git \
+    --deb-priority "extra" \
+    bin/cbk-pull=/usr/bin/cbk-pull \
+    bin/cbk-tarsnap-push=/usr/bin/cbk-tarsnap-push \
+    bin/git-mirror=/usr/bin/git-mirror \
+    bin/headers=/usr/bin/headers \
+    ./share/cbk=/usr/share/cbk
