@@ -3,7 +3,7 @@ fpm \
     -s dir \
     -n cbk \
     -t deb \
-    --version 0.0.2 \
+    --version 0.0.1 \
     --maintainer "Simon Rozet <me@simonrozet.com>" \
     --license "MIT" \
     --category "utils" \
