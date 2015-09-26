@@ -21,4 +21,4 @@ fpm \
     bin/git-mirror=/usr/bin/git-mirror \
     bin/github-repos=/usr/bin/github-repos \
     bin/headers=/usr/bin/headers \
-    ./share/cbk=/usr/share/cbk
+    share/cbk=/usr/share
