@@ -22,10 +22,6 @@ abort "the directory set in CBK_GITHUB_DIR does not exist"
 
 # Grab the list of all repositories this set of credentials has access to
 github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
-grep -v roko.git |
-grep -v jekyll-pages |
-grep -v devspool |
-grep -v benburkert |
 while read line; do
     giturl="$line"
     user="$(echo "$giturl" | cut -d"/" -f4)"
@@ -37,6 +33,19 @@ while read line; do
     repodir="$CBK_GITHUB_DIR/$user/$repo.git"
     cloneurl="https://$CBK_GITHUB_USER:$CBK_GITHUB_TOKEN@github.com/$user/$repo"
 
-    echo "at=cbk-pull-github git=$giturl dir=$repodir" 1>&2
-    git-mirror "$cloneurl" "$repodir"
+    skip=
+    for exclude in "$CBK_GITHUB_EXCLUDE"; do
+        if [ "$repo" = "$exclude" ]; then
+            skip=1
+            break
+        fi
+    done
+
+    if [ "$skip" ]; then
+        echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
+        continue
+    else
+        echo "command=cbk-pull-github at=start git=$giturl dir=$repodir" 1>&2
+        git-mirror "$cloneurl" "$repodir"
+    fi
 done
