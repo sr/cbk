@@ -20,7 +20,7 @@ test -d "$destdir" ||
 git clone -q --mirror "$repourl" "$destdir">/dev/null
 
 # sync changes from the remote repository
-git --git-dir="$destdir" fetch -ap --quiet origin
+git --git-dir="$destdir" fetch -ap --quiet "$repourl"
 
 # run gc and repack to optimize repository
 git --git-dir="$destdir" gc --quiet --aggressive
