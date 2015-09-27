@@ -22,7 +22,7 @@ git config user.email "$(whoami)@$(hostname -f)"
 
 # Commit changes if any
 test -n "$(git status --porcelain)" && {
-    git add . >/dev/null
+    git add -A . >/dev/null
     git commit \
         --allow-empty-message \
         --no-edit >/dev/null
