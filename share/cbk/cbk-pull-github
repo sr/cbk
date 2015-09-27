@@ -46,7 +46,7 @@ while read line; do
         echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
         continue
     else
-        echo "command=cbk-pull-github at=start git=$giturl dir=$repodir" 1>&2
+        echo "command=cbk-pull-github at=mirror git=$giturl dir=$repodir" 1>&2
         git-mirror "$cloneurl" "$repodir"
     fi
 done
