@@ -35,14 +35,14 @@ while read line; do
 
     # Skip mirroring if the repository is included in the exclude list
     skip=false
-    for exclude in "$CBK_GITHUB_EXCLUDES"; do
+    for exclude in $CBK_GITHUB_EXCLUDES; do
         if [ "$repo" = "$exclude" ]; then
             skip=true
             break
         fi
     done
 
-    if [ $skip ]; then
+    if $skip; then
         echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
         continue
     else
