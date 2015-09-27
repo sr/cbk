@@ -36,7 +36,7 @@ while read line; do
     # Skip mirroring if the repository is included in the exclude list
     skip=false
     for exclude in $CBK_GITHUB_EXCLUDES; do
-        if [ "$repo" = "$exclude" ]; then
+        if printf "$user/$repo" | grep -q "$exclude"; then
             skip=true
             break
         fi
