@@ -45,7 +45,6 @@ while read line; do
     if [ $skip ]; then
         echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
         continue
-    # Otherwise mirror the remote repository onto the local data directory
     else
         echo "command=cbk-pull-github at=start git=$giturl dir=$repodir" 1>&2
         git-mirror "$cloneurl" "$repodir"
