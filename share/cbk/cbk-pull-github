@@ -34,15 +34,15 @@ while read line; do
     cloneurl="https://$CBK_GITHUB_USER:$CBK_GITHUB_TOKEN@github.com/$user/$repo"
 
     # Skip mirroring if the repository is included in the exclude list
-    skip=
+    skip=false
     for exclude in "$CBK_GITHUB_EXCLUDES"; do
         if [ "$repo" = "$exclude" ]; then
-            skip=1
+            skip=true
             break
         fi
     done
 
-    if [ "$skip" ]; then
+    if [ $skip ]; then
         echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
         continue
     # Otherwise mirror the remote repository onto the local data directory
