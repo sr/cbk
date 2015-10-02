@@ -1,13 +1,32 @@
 #!/bin/sh
-#/ Usage: cbk-pull
+#/ Usage: cbk-pull [-a]
+#/        cbk-pull <cloud>...
 #/ Pull down cloud data onto the local host.
 set -e
 
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
-cbk_pull() {
-    cloud="$1"
+clouds=""
+while [ "$#" -ne 0 ]; do
+    case "$1" in
+        -a)
+            clouds="$CBK_CLOUDS"
+            shift
+            ;;
+        github|fastmail-imap|fastmail-carddav|irclogs)
+            clouds="$clouds $1"
+            shift
+            ;;
+        *)
+            echo "cbk: Unsupported cloud source \"$1\"" 1>&2
+            echo "Supported sources: $CBK_CLOUDS" 1>&2
+            exit 1
+            ;;
+    esac
+done
+
+for cloud in $clouds; do
     pullcommand="cbk-pull-$cloud"
     start=$(date +"%s")
 
@@ -20,16 +39,4 @@ cbk_pull() {
     else
         echo "at=error cloud=$cloud" 1>&2
     fi
-}
-
-# Mirror all accessible GitHub repositories
-cbk_pull "github"
-
-# Fetch email data from Fastmail over IMAP
-cbk_pull "fastmail-imap"
-
-# Fetch contact/CardDAV data from Fastmail
-cbk_pull "fastmail-carddav"
-
-# Copy irc chat logs from the local machine
-cbk_pull "irclogs"
+done

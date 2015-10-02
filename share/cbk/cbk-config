@@ -14,6 +14,9 @@ export PATH="$(pwd)/share/cbk:$PATH"
 # The location of the configuration file
 : ${CBK_CONFIG:="/usr/local/etc/cbk.conf"}
 
+# List of supported cloud sources
+: ${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs"}
+
 if [ ! -d "$CBK_DATA_DIR" ]; then
     echo "The data directory set in CBK_DATA_DIR does not exists." 1>&2
     exit 1
