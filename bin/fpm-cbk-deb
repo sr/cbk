@@ -24,3 +24,5 @@ fpm \
     bin/github-repos=/usr/bin/github-repos \
     bin/headers=/usr/bin/headers \
     share/cbk=/usr/share
+
+package_cloud push sr/utils/ubuntu/trusty cbk_${version}_all.deb
