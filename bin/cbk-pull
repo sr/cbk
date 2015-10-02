@@ -6,27 +6,39 @@ set -e
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
+log_error() {
+    echo "at=error cloud=$1" 1>&2
+}
+
 # Mirror all accessible GitHub repositories
 start=$(date +"%s")
 echo "at=start cloud=github" 1>&2
-cbk-pull-github
-echo "at=finish cloud=github duration=$(($(date +'%s') - $start))s" 1>&2
+if cbk-pull-github
+then echo "at=finish cloud=github duration=$(($(date +'%s') - $start))s" 1>&2
+else log_error "github"
+fi
 
 # Fetch email data from Fastmail over IMAP
 start=$(date +"%s")
 echo "at=start cloud=fastmail-imap" 1>&2
-cbk-pull-fastmail-imap
-echo "at=finish cloud=fastmail-imap duration=$(($(date +"%s") - $start))s" 1>&2
+if cbk-pull-fastmail-imap
+then echo "at=finish cloud=fastmail-imap duration=$(($(date +"%s") - $start))s" 1>&2
+else log_error "fastmail-imap"
+fi
 
 # Fetch contact/CardDAV data from Fastmail
 start=$(date +"%s")
 echo "at=start cloud=fastmail-carddav" 1>&2
-cbk-pull-fastmail-carddav
-echo "at=finish cloud=fastmail-carddav" \
+if cbk-pull-fastmail-carddav
+then echo "at=finish cloud=fastmail-carddav" \
     "duration=$(($(date +"%s") - $start))s" 1>&2
+else log_error "fastmail-carddav"
+fi
 
 # Copy irc chat logs from the local machine
 start=$(date +"%s")
 echo "at=start cloud=irclogs" 1>&2
-cbk-pull-irclogs
-echo "at=finish cloud=irclogs duration=$(($(date +"%s") - $start))s" 1>&2
+if cbk-pull-irclogs
+then echo "at=finish cloud=irclogs duration=$(($(date +"%s") - $start))s" 1>&2
+else log_error "irclogs"
+fi
