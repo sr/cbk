@@ -6,39 +6,30 @@ set -e
 cd $(dirname "$0")/..
 . share/cbk/cbk-config
 
-log_error() {
-    echo "at=error cloud=$1" 1>&2
+cbk_pull() {
+    cloud="$1"
+    pullcommand="cbk-pull-$cloud"
+    start=$(date +"%s")
+
+    echo "at=start cloud=$cloud" 1>&2
+
+    if $pullcommand
+    then
+        duration="$(($(date +'%s') - $start))"
+        echo "at=finish cloud=$cloud duration=$duration" 1>&2
+    else
+        echo "at=error cloud=$cloud" 1>&2
+    fi
 }
 
 # Mirror all accessible GitHub repositories
-start=$(date +"%s")
-echo "at=start cloud=github" 1>&2
-if cbk-pull-github
-then echo "at=finish cloud=github duration=$(($(date +'%s') - $start))s" 1>&2
-else log_error "github"
-fi
+cbk_pull "github"
 
 # Fetch email data from Fastmail over IMAP
-start=$(date +"%s")
-echo "at=start cloud=fastmail-imap" 1>&2
-if cbk-pull-fastmail-imap
-then echo "at=finish cloud=fastmail-imap duration=$(($(date +"%s") - $start))s" 1>&2
-else log_error "fastmail-imap"
-fi
+cbk_pull "fastmail-imap"
 
 # Fetch contact/CardDAV data from Fastmail
-start=$(date +"%s")
-echo "at=start cloud=fastmail-carddav" 1>&2
-if cbk-pull-fastmail-carddav
-then echo "at=finish cloud=fastmail-carddav" \
-    "duration=$(($(date +"%s") - $start))s" 1>&2
-else log_error "fastmail-carddav"
-fi
+cbk_pull "fastmail-carddav"
 
 # Copy irc chat logs from the local machine
-start=$(date +"%s")
-echo "at=start cloud=irclogs" 1>&2
-if cbk-pull-irclogs
-then echo "at=finish cloud=irclogs duration=$(($(date +"%s") - $start))s" 1>&2
-else log_error "irclogs"
-fi
+cbk_pull "irclogs"
