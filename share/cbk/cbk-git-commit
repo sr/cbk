@@ -17,6 +17,9 @@ GIT_WORK_TREE="$directory"
 GIT_DIR="$directory/.git"
 export GIT_WORK_TREE GIT_DIR
 
+# Initialize the repository if necessary
+test -d "$GIT_DIR" || git init -q
+
 git config user.name "$(basename "$program")"
 git config user.email "$(whoami)@$(hostname -f)"
 
@@ -29,5 +32,5 @@ test -n "$(git status --porcelain)" && {
 }
 
 # Optimize repository disk usage by forcing a GC and repack every time
-git gc --aggressive
-git repack
+git gc -q --aggressive
+git repack -q
