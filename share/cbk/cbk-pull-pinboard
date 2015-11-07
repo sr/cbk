@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if [ -z "$CBK_PINBOARD_TOKEN" ]; then
+    echo "Pinboard API token missing. Get one at https://pinboard.in/settings/" \
+        "password and set CBK_PINBOARD_TOKEN" 1>&2
+    exit 1
+fi
+
+test -d "$CBK_PINBOARD_DIR" || mkdir "$CBK_PINBOARD_DIR"
+
+curl -s "https://api.pinboard.in/v1/posts/all?auth_token=${CBK_PINBOARD_TOKEN}" >\
+"${CBK_PINBOARD_DIR}/bookmarks.xml"
+
+cbk-git-commit "$0" "$CBK_PINBOARD_DIR"
