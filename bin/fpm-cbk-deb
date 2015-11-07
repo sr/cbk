@@ -11,6 +11,7 @@ fpm \
     --category "utils" \
     --architecture "all" \
     --url "https://github.com/sr/cbk" \
+    -d "curl" \
     -d "coreutils >= 8.21" \
     -d "git >= 1.9.1" \
     -d "offlineimap >= 6.5.4" \
