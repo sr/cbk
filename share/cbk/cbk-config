@@ -42,5 +42,5 @@ export CBK_TARSNAP_CACHE_DIR
 : ${CBK_TARSNAP_KEYFILE="/usr/local/etc/tarsnap.key"}
 export CBK_TARSNAP_KEYFILE
 
-# Source in configuration file.
-. "$CBK_CONFIG"
+# Source in configuration file when present.
+test -f "$CBK_CONFIG" && . "$CBK_CONFIG"
