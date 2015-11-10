@@ -1,0 +1,14 @@
+#!/bin/sh
+if [ -z "$CBK_SOUNDCLOUD_LIKES_USER" ]; then
+    echo "CBK_SOUNDCLOUD_LIKES_USER not set" 1>&2
+    exit 1
+fi
+
+youtube-dl \
+    -q \
+    -o "${CBK_SOUNDCLOUD_LIKES_DIR}/%(uploader)s/%(id)s.%(ext)s" \
+    --restrict-filenames \
+    --write-info-json \
+    --write-thumbnail \
+    --add-metadata \
+    "https://soundcloud.com/${CBK_SOUNDCLOUD_LIKES_USER}/likes"

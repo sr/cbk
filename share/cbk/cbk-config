@@ -15,7 +15,7 @@ export PATH="$(pwd)/share/cbk:$PATH"
 : ${CBK_CONFIG:="/usr/local/etc/cbk.conf"}
 
 # List of supported sources
-: ${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard"}
+: ${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard soundcloud-likes"}
 
 if [ ! -d "$CBK_DATA_DIR" ]; then
     echo "The data directory set in CBK_DATA_DIR does not exists." 1>&2
@@ -28,11 +28,13 @@ fi
 : ${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}
 : ${CBK_IRCLOGS_DIR:="${CBK_DATA_DIR}/irclogs"}
 : ${CBK_PINBOARD_DIR:="${CBK_DATA_DIR}/pinboard"}
+: ${CBK_SOUNDCLOUD_LIKES_DIR:="${CBK_DATA_DIR}/soundcloud-likes"}
 export CBK_FASTMAIL_IMAP_DIR \
     CBK_FASTMAIL_CARDDAV_DIR \
     CBK_GITHUB_DIR \
     CBK_IRCLOGS_DIR \
-    CBK_PINBOARD_DIR
+    CBK_PINBOARD_DIR \
+    CBK_SOUNDCLOUD_LIKES_DIR
 
 # The cache directory used by tarsnap
 : ${CBK_TARSNAP_CACHE_DIR:="${CBK_ROOT_DIR}/cache"}

@@ -19,7 +19,7 @@ while [ "$#" -ne 0 ]; do
             clouds="$CBK_CLOUDS"
             shift
             ;;
-        github|fastmail-imap|fastmail-carddav|irclogs|pinboard)
+        github|fastmail-imap|fastmail-carddav|irclogs|pinboard|soundcloud-likes)
             clouds="$clouds $1"
             shift
             ;;
