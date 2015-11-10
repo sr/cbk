@@ -46,3 +46,5 @@ export CBK_TARSNAP_KEYFILE
 
 # Source in configuration file when present
 test -f "$CBK_CONFIG" && . "$CBK_CONFIG"
+
+true
