@@ -6,6 +6,7 @@ fi
 
 youtube-dl \
     -q \
+    -i \
     -o "${CBK_SOUNDCLOUD_LIKES_DIR}/%(uploader)s/%(id)s.%(ext)s" \
     --restrict-filenames \
     --write-info-json \
