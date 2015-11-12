@@ -21,7 +21,6 @@ fpm \
     --exclude .git \
     --deb-priority "extra" \
     bin/cbk-pull=/usr/bin/cbk-pull \
-    bin/cbk-tarsnap-push=/usr/bin/cbk-tarsnap-push \
     bin/git-mirror=/usr/bin/git-mirror \
     bin/github-repos=/usr/bin/github-repos \
     bin/headers=/usr/bin/headers \
