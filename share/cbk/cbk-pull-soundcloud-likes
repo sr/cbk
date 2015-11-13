@@ -1,8 +1,9 @@
 #!/bin/sh
-if [ -z "$CBK_SOUNDCLOUD_LIKES_USER" ]; then
-    echo "CBK_SOUNDCLOUD_LIKES_USER not set" 1>&2
-    exit 1
-fi
+#/ Usage: cbk-pull-soundcloud-likes
+#/ Download all audio tracks liked by the configured user on SoundCloud.
+
+test -z "$CBK_SOUNDCLOUD_LIKES_USER" &&
+abort "CBK_SOUNDCLOUD_LIKES_USER not set"
 
 youtube-dl \
     -q \

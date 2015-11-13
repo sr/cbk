@@ -1,20 +1,17 @@
 #!/bin/sh
+#/ Usage: cbk-pull-fastmail-carddav
+#/ Download CardDAV (contact data) from the Fastmail server onto a local
+#/ directory versioned in git. This requires vdirsyncer.
 set -e
 
 cd $(dirname "$0")/../..
 . share/cbk/cbk-config
 
-# Make sure the vdirsyncer executable is available
-if [ ! -x "$CBK_VDIRSYNCER_DIR/bin/vdirsyncer" ]; then
-    echo "at=error command=cbk-pull-fastmail-carddav" \
-        "msg=\"vdirsyncer executable not found\"" 1>&2
+# Bail out if vdirsyncer is not available on the PATH
+if ! command -v "vdirsyncer">/dev/null; then
+    echo "$(basename "$0"): vdirsyncer command not found" 1>&2
     exit 1
 fi
-
-# Write configuration to a temporary file and tell vdirsyncer to use it
-VDIRSYNCER_CONFIG="$(mktemp -t vdirsyncerXXXX)"
-trap "rm -f $VDIRSYNCER_CONFIG" EXIT
-export VDIRSYNCER_CONFIG
 
 # Fastmail requires using username in the form of user+Default@fastmail.fm to
 # access CardDAV data.
@@ -24,6 +21,10 @@ username="$(
     echo "$CBK_FASTMAIL_USERNAME" |
     sed -e "s/\(.*\)@/\1+Default@/g"
 )"
+
+# Write vdirsyncer config to a temporary file
+VDIRSYNCER_CONFIG="$(mktemp -t vdirsyncerXXXX)"
+trap "rm -f $VDIRSYNCER_CONFIG" EXIT
 
 cat > "$VDIRSYNCER_CONFIG" <<EOS
 [general]
@@ -51,11 +52,11 @@ username = $username
 password = ${CBK_FASTMAIL_PASSWORD}
 EOS
 
-# Put the vdirsyncer executable in our PATH
-PATH="$CBK_VDIRSYNCER_DIR/bin:$PATH"
+# Configure vdirsyncer to use our config file
+export VDIRSYNCER_CONFIG
 
 # Pull down CardDAV data from the remote
-vdirsyncer sync
+yes "yes" | vdirsyncer sync
 
 # Commit changes to the git repository.
 cbk-git-commit "$0" "$CBK_FASTMAIL_CARDDAV_DIR"

@@ -1,10 +1,14 @@
 #!/bin/sh
+#/ Usage: cbk-pull-pinboard
+#/ Download all bookmarks from pinboard.in and store them in git.
 set -e
 
+cd $(dirname "$0")/../..
+. share/cbk/cbk-config
+
 if [ -z "$CBK_PINBOARD_TOKEN" ]; then
-    echo "Pinboard API token missing. Get one at https://pinboard.in/settings/" \
-        "password and set CBK_PINBOARD_TOKEN" 1>&2
-    exit 1
+    abort "Pinboard API token missing. Get one at https://pinboard.in/settings/" \
+        "password and set CBK_PINBOARD_TOKEN."
 fi
 
 test -d "$CBK_PINBOARD_DIR" || mkdir "$CBK_PINBOARD_DIR"

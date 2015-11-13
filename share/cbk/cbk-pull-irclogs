@@ -1,10 +1,9 @@
 #!/bin/sh
+#/ Usage: cbk-pull-irclogs
 set -e
 
-if [ -z "$CBK_IRCLOGS_SOURCE" ]; then
-    echo "at=cbk-pull-github error=\"CBK_IRCLOGS_SOURCE not set\"" 1>&2
-    exit 1
-fi
+test -z "$CBK_IRCLOGS_SOURCE" &&
+abort "CBK_IRCLOGS_SOURCE not set"
 
 # Copy the log files
 rsync -avz "$CBK_IRCLOGS_SOURCE/" "$CBK_IRCLOGS_DIR/"

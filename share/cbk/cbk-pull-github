@@ -1,24 +1,17 @@
 #!/bin/sh
 #/ Usage: cbk-pull-github
-#/
-#/ Mirror all GitHub repository into a repository. This is typically not
-#/ invoked directly.
-#/
-#/ See Also: github-repos(1), git-mirror(1)
+#/ Mirror all GitHub repositories accessible by the configured user and token.
 set -e
 
-abort() {
-    echo "command=cbk-pull-github at=error msg=\"$@\"" 1>&2
-    exit 1
-}
+cd $(dirname "$0")/../..
+. share/cbk/cbk-config
 
 # Ensure the base github directory exists
-[ ! -d "$CBK_GITHUB_DIR" ] &&
-abort "the directory set in CBK_GITHUB_DIR does not exist"
+test -d "$CBK_GITHUB_DIR" || mkdir "$CBK_GITHUB_DIR"
 
 # Make sure the auth credentials for the GitHub API are set
-[ -z "$CBK_GITHUB_USER" ] && abort "CBK_GITHUB_USER not set"
-[ -z "$CBK_GITHUB_TOKEN" ] && abort "CBK_GITHUB_TOKEN not set"
+test -z "$CBK_GITHUB_USER" && abort "CBK_GITHUB_USER not set"
+test -z "$CBK_GITHUB_TOKEN" && abort "CBK_GITHUB_TOKEN not set"
 
 # Iterate over all repositories this set of credentials has access to
 github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
@@ -43,10 +36,10 @@ while read line; do
     done
 
     if $skip; then
-        echo "command=cbk-pull-github at=skip git=$giturl dir=$repodir" 1>&2
+        echo "cloud=github at=skip git=$giturl dir=$repodir" 1>&2
         continue
     else
-        echo "command=cbk-pull-github at=mirror git=$giturl dir=$repodir" 1>&2
-        git-mirror "$cloneurl" "$repodir"
+        echo "cloud=github at=mirror git=$giturl dir=$repodir" 1>&2
+        cbk-git-mirror "$cloneurl" "$repodir"
     fi
 done
