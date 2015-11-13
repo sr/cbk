@@ -1,0 +1,20 @@
+#!/bin/sh
+#/ Usage: cbk-git-gc GIT_DIR
+set -e
+
+test -z "$1" && {
+    grep '^#/' "$0" |cut -c4-
+    exit 2
+}
+
+test -d "$1" || {
+    echo "GIT_DIR is not a directory" 2>&1
+    exit 1
+}
+
+export GIT_DIR="$1"
+git gc -q --aggressive
+git repack -q
+rm -rf "${GIT_DIR}/hooks"
+rm -f "${GIT_DIR}/description"
+rm -f "${GIT_DIR}/info/exclude"

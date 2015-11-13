@@ -31,6 +31,5 @@ test -n "$(git status --porcelain)" && {
         --no-edit >/dev/null
 }
 
-# Optimize repository disk usage by forcing a GC and repack every time
-git gc -q --aggressive
-git repack -q
+# Optimize repository disk usage
+cbk-git-gc "$GIT_DIR"

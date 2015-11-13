@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ Usage: git-mirror <repository> <directory>
+#/ Usage: cbk-git-mirror <repository> <directory>
 #/
 #/ Mirror the given git URL into the given directory, setting up the destination
 #/ repository if necessary before pulling in changes from the remote.
@@ -22,6 +22,5 @@ git clone -q --mirror "$repourl" "$destdir">/dev/null
 # sync changes from the remote repository
 git --git-dir="$destdir" fetch -ap --quiet "$repourl"
 
-# run gc and repack to optimize repository
-git --git-dir="$destdir" gc --quiet --aggressive
-git --git-dir="$destdir" repack --quiet
+# optimize repository
+cbk-git-gc "$destdir"
