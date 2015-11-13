@@ -5,7 +5,7 @@
 set -e
 
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
-    grep ^#/ <"$0" | cut -c4-
+    grep ^#/ "$0" | cut -c4-
     exit 2
 fi
 
