@@ -1,4 +1,4 @@
-VERSION = $(shell cbk-pull --version | cut -d' ' -f3)
+VERSION = $(shell $(shell pwd)/bin/cbk-pull --version | cut -d' ' -f3)
 
 release: package
 	package_cloud push sr/utils/ubuntu/trusty cbk_$(VERSION)_all.deb
