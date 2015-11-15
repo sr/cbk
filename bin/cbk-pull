@@ -39,7 +39,7 @@ for cloud in $clouds; do
 
     if $pullcommand
     then
-        duration="$(($(date +'%s') - $start))"
+        duration="$(($(date +'%s') - start))"
         echo "at=finish cloud=$cloud duration=$duration" 1>&2
     else
         echo "at=error cloud=$cloud" 1>&2
