@@ -3,6 +3,9 @@
 #/ Configuration, setup, and utility functions for all cbk commands.
 set -e
 
+# Current version. This is returned by 'cbk-pull --version'
+CBK_VERSION="0.0.10"
+
 # Add porcelain utilities to the PATH
 export PATH="$(pwd)/share/cbk:$PATH"
 
