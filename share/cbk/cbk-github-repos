@@ -1,21 +1,20 @@
 #!/bin/sh
 #/ Usage: github-repos <user> <token>
-#/
-#/ Writes the HTTPS clone URLs of all GitHub repositories accessible by the
+#/ Write the HTTPS clone URLs of all GitHub repositories accessible by the
 #/ given GitHub user and token to stdout.
 #/
 #/ Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
 set -e
 
+# Show usage if the user or token arguments are missing
 user="$1"
 token="$2"
-
-# usage and help
-if test $# -eq 0 || test -z "$user" || test -z "$token"
-then
-    cat "$0" | grep '^#/' | cut -c4- 1>&2
-    exit 2
+if [ -z "$user" -o -z "$token" ]; then
+    set -- "--help"
 fi
+
+cd $(dirname "$0")/../..
+. share/cbk/cbk-config
 
 # construct the various api url
 authparam="access_token=$token"
@@ -27,9 +26,8 @@ reposurl="$apiurl/user/repos?$authparam"
 # make sure we're authenticated
 if ! headers "$authurl" | grep -q "Status: 200 OK"
 then
-    echo "github-repos: Authentication failed. Check the given user and " \
-        "token are valid." 1>&2
-    exit 1
+    abort "Authentication failed. Check the given user and " \
+        "token are valid."
 fi
 
 # list all repositories clone urls exposed at the given api
@@ -46,7 +44,7 @@ list_repos() {
         cut -d">" -f1
     )
 
-    # the Link header is omitted when there's only one page. default to 1
+    # the Link header is omitted when there's only one page. defaults to 1
     test -z "$last_page" && {
         last_page="1"
     }
