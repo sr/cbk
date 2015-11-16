@@ -24,7 +24,7 @@ orgsurl="$apiurl/user/orgs?$authparam"
 reposurl="$apiurl/user/repos?$authparam"
 
 # make sure we're authenticated
-if ! headers "$authurl" | grep -q "Status: 200 OK"
+if ! cbk-http-headers "$authurl" | grep -q "Status: 200 OK"
 then
     abort "Authentication failed. Check the given user and " \
         "token are valid."
@@ -36,7 +36,7 @@ list_repos() {
 
     # grab the last page number
     last_page=$(
-        headers "$url" |
+        cbk-http-headers "$url" |
         grep Link: |
         cut -d"," -f2 |
         cut -d"&" -f2 |
