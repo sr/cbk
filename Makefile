@@ -10,7 +10,7 @@ clean:
 	rm -f cbk*.deb
 
 check:
-	@ shellcheck bin/* share/cbk/*
+	@ shellcheck -s sh -f gcc bin/* share/cbk/*
 
 cbk_$(VERSION)_all.deb:
 	@ fpm \
