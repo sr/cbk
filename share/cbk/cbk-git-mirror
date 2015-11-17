@@ -11,13 +11,6 @@ cd "$(dirname "$0")/../.."
 repourl="$1"
 destdir="$2"
 
-# show usage when arguments are missing
-if test $# -eq 0 || test -z "$repourl" || test -z "$destdir"
-then
-    cat "$0" | grep '^#/' | cut -c4- 1>&2
-    exit 2
-fi
-
 # perform the initial clone if the mirror doesn't exist yet
 test -d "$destdir" ||
 git clone -q --mirror "$repourl" "$destdir">/dev/null
