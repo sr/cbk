@@ -3,7 +3,7 @@
 #/ Mirror all GitHub repositories accessible by the configured user and token.
 set -e
 
-cd $(dirname "$0")/../..
+cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 # Ensure the base github directory exists

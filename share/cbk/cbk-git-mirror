@@ -5,6 +5,9 @@
 #/ repository if necessary before pulling in changes from the remote.
 set -e
 
+cd "$(dirname "$0")/../.."
+. share/cbk/cbk-config
+
 repourl="$1"
 destdir="$2"
 

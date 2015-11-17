@@ -13,7 +13,7 @@ if [ -z "$user" -o -z "$token" ]; then
     set -- "--help"
 fi
 
-cd $(dirname "$0")/../..
+cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 # construct the various api url

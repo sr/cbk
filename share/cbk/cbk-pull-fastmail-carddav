@@ -4,7 +4,7 @@
 #/ directory versioned in git. This requires vdirsyncer.
 set -e
 
-cd $(dirname "$0")/../..
+cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 # Bail out if vdirsyncer is not available on the PATH
@@ -23,8 +23,9 @@ username="$(
 )"
 
 # Write vdirsyncer config to a temporary file
+
 VDIRSYNCER_CONFIG="$(mktemp -t vdirsyncerXXXX)"
-trap "rm -f $VDIRSYNCER_CONFIG" EXIT
+trap 'rm -f $VDIRSYNCER_CONFIG' EXIT
 
 cat > "$VDIRSYNCER_CONFIG" <<EOS
 [general]

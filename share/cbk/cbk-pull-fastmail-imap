@@ -3,11 +3,11 @@
 #/ Mirror IMAP data from Fastmail onto a local Maildir versioned by git.
 set -e
 
-cd $(dirname "$0")/../..
+cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 config="$(mktemp -t offlineimaprcXXXX)"
-trap "rm -f $config" EXIT
+trap 'rm -f $config' EXIT
 
 # Write offlineimap configuration to temporary file
 cat > "$config" <<EOF

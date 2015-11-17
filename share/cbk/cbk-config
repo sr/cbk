@@ -7,27 +7,28 @@ set -e
 CBK_VERSION="0.0.10"
 
 # Add porcelain utilities to the PATH
-export PATH="$(pwd)/share/cbk:$PATH"
+PATH="$(pwd)/share/cbk:$PATH"
+export PATH
 
 # The root directory where all cbk data is kept
-: ${CBK_ROOT_DIR:="$HOME"}
+: "${CBK_ROOT_DIR:="$HOME"}"
 
 # The base directory for all cloud backups
-: ${CBK_DATA_DIR:="${CBK_ROOT_DIR}/data"}
+: "${CBK_DATA_DIR:="${CBK_ROOT_DIR}/data"}"
 
 # The location of the configuration file
-: ${CBK_CONFIG:="/usr/local/etc/cbk.conf"}
+: "${CBK_CONFIG:="/usr/local/etc/cbk.conf"}"
 
 # List of supported sources
-: ${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard soundcloud-likes"}
+: "${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard soundcloud-likes"}"
 
 # The locations of the individual backup data directories
-: ${CBK_FASTMAIL_IMAP_DIR:="${CBK_DATA_DIR}/fastmail-imap"}
-: ${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddav"}
-: ${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}
-: ${CBK_IRCLOGS_DIR:="${CBK_DATA_DIR}/irclogs"}
-: ${CBK_PINBOARD_DIR:="${CBK_DATA_DIR}/pinboard"}
-: ${CBK_SOUNDCLOUD_LIKES_DIR:="${CBK_DATA_DIR}/soundcloud-likes"}
+: "${CBK_FASTMAIL_IMAP_DIR:="${CBK_DATA_DIR}/fastmail-imap"}"
+: "${CBK_FASTMAIL_CARDDAV_DIR:="${CBK_DATA_DIR}/fastmail-carddav"}"
+: "${CBK_GITHUB_DIR:="${CBK_DATA_DIR}/github"}"
+: "${CBK_IRCLOGS_DIR:="${CBK_DATA_DIR}/irclogs"}"
+: "${CBK_PINBOARD_DIR:="${CBK_DATA_DIR}/pinboard"}"
+: "${CBK_SOUNDCLOUD_LIKES_DIR:="${CBK_DATA_DIR}/soundcloud-likes"}"
 export CBK_FASTMAIL_IMAP_DIR \
     CBK_FASTMAIL_CARDDAV_DIR \
     CBK_GITHUB_DIR \
@@ -36,15 +37,15 @@ export CBK_FASTMAIL_IMAP_DIR \
     CBK_SOUNDCLOUD_LIKES_DIR
 
 # The cache directory used by tarsnap
-: ${CBK_TARSNAP_CACHE_DIR:="${CBK_ROOT_DIR}/cache"}
+: "${CBK_TARSNAP_CACHE_DIR:="${CBK_ROOT_DIR}/cache"}"
 export CBK_TARSNAP_CACHE_DIR
 
 # The key file used for creating the tarsnap archives
-: ${CBK_TARSNAP_KEYFILE:="/usr/local/etc/tarsnap.key"}
+: "${CBK_TARSNAP_KEYFILE:="/usr/local/etc/tarsnap.key"}"
 export CBK_TARSNAP_KEYFILE
 
 # Fingerprint of Fastmail's IMAP server SSL certificate
-: ${CBK_FASTMAIL_CERT_FINGERPRINT:="958b1601563aef92607a41eb5bad22e3cace8431"}
+: "${CBK_FASTMAIL_CERT_FINGERPRINT:="958b1601563aef92607a41eb5bad22e3cace8431"}"
 export CBK_FASTMAIL_CERT_FINGERPRINT
 
 # Source in configuration file when present
@@ -54,7 +55,7 @@ test -f "$CBK_CONFIG" && . "$CBK_CONFIG"
 test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
 
 # Show usage for --help or -h
-for arg in $@; do
+for arg in "$@"; do
     if [ "$arg" = "--help" -o "$arg" = "-h" ]; then
         grep ^#/ "$0" | cut -c4-
         exit 2
@@ -62,7 +63,7 @@ for arg in $@; do
 done
 
 abort() {
-    echo "$(basename "$0"): $@" 1>&2
+    echo "$(basename "$0"): $*" 1>&2
     exit 1
 }
 

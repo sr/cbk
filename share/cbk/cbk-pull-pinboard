@@ -3,7 +3,7 @@
 #/ Download all bookmarks from pinboard.in and store them in git.
 set -e
 
-cd $(dirname "$0")/../..
+cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 if [ -z "$CBK_PINBOARD_TOKEN" ]; then
