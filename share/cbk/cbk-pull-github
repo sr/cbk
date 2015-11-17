@@ -14,7 +14,7 @@ test -z "$CBK_GITHUB_USER" && abort "CBK_GITHUB_USER not set"
 test -z "$CBK_GITHUB_TOKEN" && abort "CBK_GITHUB_TOKEN not set"
 
 # Iterate over all repositories this set of credentials has access to
-github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
+cbk-github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
 while read line; do
     giturl="$line"
     user="$(echo "$giturl" | cut -d"/" -f4)"
