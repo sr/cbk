@@ -48,7 +48,7 @@ test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
 for arg in "$@"; do
     if test "$arg" = "--help" || test "$arg" = "-h"
     then
-        grep ^#/ "$0" | cut -c4-
+        grep '^#/' "$0" | cut -c4-
         exit 2
     fi
 done
