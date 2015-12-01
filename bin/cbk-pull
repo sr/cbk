@@ -1,9 +1,7 @@
 #!/bin/sh
-#/ Usage: cbk-pull [-a]
-#/        cbk-pull <cloud>...
-#/        cbk-pull [--version]
-#/ Pull down cloud data onto the local host.
-set -e
+#/ Usage: cbk-pull [--version] [--help] [-a] <source>...
+#/ Pull down cloud data onto the local host. Supported sources:
+set -eu
 
 cd "$(dirname "$0")/.."
 . share/cbk/cbk-config
@@ -19,29 +17,35 @@ while [ "$#" -ne 0 ]; do
             clouds="$CBK_CLOUDS"
             shift
             ;;
-        github|fastmail-imap|fastmail-carddav|irclogs|pinboard|soundcloud-likes)
+        *)
+            supported=false
+            for src in $CBK_CLOUDS; do
+                if [ "$1" = "$src" ]
+                then supported=true
+                fi
+            done
+            if ! $supported; then
+                echo "cbk: Unsupported data source(s) \"$1\"" 1>&2
+                echo "Supported sources: $CBK_CLOUDS" 1>&2
+                exit 1
+            fi
             clouds="$clouds $1"
             shift
-            ;;
-        *)
-            echo "cbk: Unsupported cloud source \"$1\"" 1>&2
-            echo "Supported sources: $CBK_CLOUDS" 1>&2
-            exit 1
             ;;
     esac
 done
 
 for cloud in $clouds; do
     pullcommand="cbk-pull-$cloud"
-    start=$(date +"%s")
+    start="$(date +"%s")"
 
-    echo "at=start cloud=$cloud" 1>&2
+    echo "at=start source=$cloud" 1>&2
 
     if $pullcommand
     then
         duration="$(($(date +'%s') - start))"
-        echo "at=finish cloud=$cloud duration=$duration" 1>&2
+        echo "at=finish source=$cloud duration=$duration" 1>&2
     else
-        echo "at=error cloud=$cloud" 1>&2
+        echo "at=error source=$cloud" 1>&2
     fi
 done
