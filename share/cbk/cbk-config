@@ -37,14 +37,6 @@ export CBK_FASTMAIL_IMAP_DIR \
     CBK_PINBOARD_DIR \
     CBK_SOUNDCLOUD_LIKES_DIR
 
-# The cache directory used by tarsnap
-: "${CBK_TARSNAP_CACHE_DIR:="${CBK_ROOT_DIR}/cache"}"
-export CBK_TARSNAP_CACHE_DIR
-
-# The key file used for creating the tarsnap archives
-: "${CBK_TARSNAP_KEYFILE:="/usr/local/etc/tarsnap.key"}"
-export CBK_TARSNAP_KEYFILE
-
 # Fingerprint of Fastmail's IMAP server SSL certificate
 : "${CBK_FASTMAIL_CERT_FINGERPRINT:="958b1601563aef92607a41eb5bad22e3cace8431"}"
 export CBK_FASTMAIL_CERT_FINGERPRINT
