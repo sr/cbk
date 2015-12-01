@@ -11,11 +11,8 @@ export CBK_VERSION
 PATH="$(pwd)/share/cbk:$PATH"
 export PATH
 
-# The root directory where all cbk data is kept
-: "${CBK_ROOT_DIR:="$HOME"}"
-
 # The base directory for all cloud backups
-: "${CBK_DATA_DIR:="${CBK_ROOT_DIR}/data"}"
+: "${CBK_DATA_DIR:="/data"}"
 
 # The location of the configuration file
 : "${CBK_CONFIG:="/usr/local/etc/cbk.conf"}"
