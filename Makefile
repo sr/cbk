@@ -1,3 +1,4 @@
+SOURCES = $(wildcard bin/* share/cbk/*)
 VERSION = $(shell $(shell pwd)/bin/cbk-pull --version | cut -d' ' -f3)
 
 release: package
@@ -6,11 +7,16 @@ release: package
 
 package: cbk_$(VERSION)_all.deb
 
-clean:
-	rm -f cbk*.deb
+check: checkbashisms shellcheck
 
-check:
-	@ shellcheck -s sh -f gcc bin/* share/cbk/*
+clean:
+	@ rm -f cbk*.deb
+
+shellcheck:
+	@ shellcheck -s sh -f gcc $(SOURCES)
+
+checkbashisms:
+	@ checkbashisms -p $(SOURCES)
 
 cbk_$(VERSION)_all.deb:
 	@ fpm \
@@ -39,4 +45,6 @@ cbk_$(VERSION)_all.deb:
 	package \
 	release \
 	check \
+	checkbashisms \
+	shellcheck \
 	clean
