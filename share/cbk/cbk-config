@@ -56,7 +56,8 @@ test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
 
 # Show usage for --help or -h
 for arg in "$@"; do
-    if [ "$arg" = "--help" -o "$arg" = "-h" ]; then
+    if test "$arg" = "--help" || test "$arg" = "-h"
+    then
         grep ^#/ "$0" | cut -c4-
         exit 2
     fi

@@ -9,8 +9,8 @@ set -e
 # Show usage if the user or token arguments are missing
 user="$1"
 token="$2"
-if [ -z "$user" -o -z "$token" ]; then
-    set -- "--help"
+if test -z "$user" || test -z "$token"
+then set -- "--help"
 fi
 
 cd "$(dirname "$0")/../.."
