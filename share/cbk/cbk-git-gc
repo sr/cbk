@@ -1,6 +1,6 @@
 #!/bin/sh
 #/ Usage: cbk-git-gc GIT_DIR
-set -e
+set -eu
 
 test -z "$1" && {
     grep '^#/' "$0" |cut -c4-

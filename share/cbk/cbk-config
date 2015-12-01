@@ -1,7 +1,7 @@
 #!/bin/sh
 #/ Usage: . cbk-config
 #/ Configuration, setup, and utility functions for all cbk commands.
-set -e
+set -eu
 
 # Current version. This is returned by 'cbk-pull --version'
 CBK_VERSION="0.0.12"

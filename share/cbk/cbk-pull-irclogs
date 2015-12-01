@@ -1,6 +1,6 @@
 #!/bin/sh
 #/ Usage: cbk-pull-irclogs
-set -e
+set -eu
 
 test -z "$CBK_IRCLOGS_SOURCE" &&
 abort "CBK_IRCLOGS_SOURCE not set"

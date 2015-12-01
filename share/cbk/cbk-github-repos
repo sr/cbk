@@ -4,7 +4,7 @@
 #/ given GitHub user and token to stdout.
 #/
 #/ Inspired by https://github.com/mrtazz/bin/blob/master/github_repo_list.sh
-set -e
+set -eu
 
 # Show usage if the user or token arguments are missing
 user="$1"

@@ -2,7 +2,7 @@
 #/ Usage: cbk-git-commit <program> <directory>
 #/ Commit any changes made by the given program in the given git working
 #/ directory.
-set -e
+set -eu
 
 program="$1"
 directory="$2"

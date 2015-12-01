@@ -3,7 +3,7 @@
 #/
 #/ Mirror the given git URL into the given directory, setting up the destination
 #/ repository if necessary before pulling in changes from the remote.
-set -e
+set -eu
 
 cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
