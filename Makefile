@@ -55,7 +55,8 @@ cbk_$(VERSION)_all.deb:
 		--deb-no-default-config-files \
 		bin/cbk-pull=/usr/bin/cbk-pull \
 		etc/cbk.conf=/etc/cbk.conf \
-		share/cbk=/usr/share
+		share/cbk=/usr/share \
+		README.md=/usr/share/docs/cbk/README.md
 
 python-%_all.deb:
 	@ package="$$(printf "$@" | cut -d_ -f1 | sed s/python\-//)"; \
