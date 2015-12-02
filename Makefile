@@ -45,6 +45,7 @@ cbk_$(VERSION)_all.deb:
 		-d "coreutils >= 8.21" \
 		-d "git >= 1.9.1" \
 		-d "offlineimap >= 6.5.4" \
+		-d "python-vdirsyncer = 0.7.3" \
 		-d "rsync >= 3.1.0" \
 		-d "sed >= 4.2.2" \
 		-d "youtube-dl >= 2015.11.24" \
