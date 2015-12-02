@@ -57,7 +57,8 @@ cbk_$(VERSION)_all.deb:
 python-%_all.deb:
 	@ package="$$(printf "$@" | cut -d_ -f1 | sed s/python\-//)"; \
 		version="$$(printf "$@" | cut -d_ -f2)"; \
-		fpm -v "$$version" -s python -t deb "$$package"
+		fpm -v "$$version" -s python -t deb "$$package" \
+			--deb-no-default-config-files
 
 .PHONY: \
 	package \
