@@ -1,5 +1,12 @@
 SOURCES = $(wildcard bin/* share/cbk/*)
 VERSION = $(shell $(shell pwd)/bin/cbk-pull --version | cut -d' ' -f3)
+VDIRSYNCER_DEBS = \
+	python-atomicwrites_0.1.8_all.deb \
+	python-click_5.0.0_all.deb \
+	python-click-log_0.1.1_all.deb \
+	python-click-threading_0.1.2_all.deb \
+	python-requests-toolbelt_0.5.0_all.deb \
+	python-vdirsyncer_0.7.3_all.deb
 
 release: package
 	package_cloud push sr/utils/ubuntu/trusty cbk_$(VERSION)_all.deb
@@ -7,10 +14,15 @@ release: package
 
 package: cbk_$(VERSION)_all.deb
 
+package-vdirsyncer: $(VDIRSYNCER_DEBS)
+
+release-vdirsyncer: package-vdirsyncer
+	package_cloud push sr/utils/ubuntu/wily $(VDIRSYNCER_DEBS)
+
 check: checkbashisms shellcheck
 
 clean:
-	@ rm -f cbk*.deb
+	@ rm -f cbk*.deb $(VDIRSYNCER_DEBS)
 
 shellcheck:
 	@ shellcheck -s sh -f gcc $(SOURCES)
@@ -41,9 +53,16 @@ cbk_$(VERSION)_all.deb:
 		bin/cbk-pull=/usr/bin/cbk-pull \
 		share/cbk=/usr/share
 
+python-%_all.deb:
+	@ package="$$(printf "$@" | cut -d_ -f1 | sed s/python\-//)"; \
+		version="$$(printf "$@" | cut -d_ -f2)"; \
+		fpm -v "$$version" -s python -t deb "$$package"
+
 .PHONY: \
 	package \
 	release \
+	package-vdirsyncer \
+	release-vdirsyncer \
 	check \
 	checkbashisms \
 	shellcheck \
