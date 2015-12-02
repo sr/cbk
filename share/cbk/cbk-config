@@ -41,9 +41,6 @@ export CBK_FASTMAIL_IMAP_DIR \
 : "${CBK_FASTMAIL_CERT_FINGERPRINT:="958b1601563aef92607a41eb5bad22e3cace8431"}"
 export CBK_FASTMAIL_CERT_FINGERPRINT
 
-# Finish up by creating the data directory if necessary
-test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
-
 # Show usage for --help or -h
 for arg in "$@"; do
     if test "$arg" = "--help" || test "$arg" = "-h"

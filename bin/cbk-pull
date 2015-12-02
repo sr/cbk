@@ -35,6 +35,9 @@ while [ "$#" -ne 0 ]; do
     esac
 done
 
+# Ensure the data directory exists.
+test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
+
 for cloud in $clouds; do
     pullcommand="cbk-pull-$cloud"
     start="$(date +"%s")"
