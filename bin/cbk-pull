@@ -19,16 +19,17 @@ while [ "$#" -ne 0 ]; do
             ;;
         *)
             supported=false
-            for src in $CBK_CLOUDS; do
-                if [ "$1" = "$src" ]
-                then supported=true
-                fi
+            for src in $CBK_CLOUDS
+            do test "$1" = "$src" && supported=true
             done
-            if ! $supported; then
+
+            if ! $supported
+            then
                 echo "cbk: Unsupported data source(s) \"$1\"" 1>&2
                 echo "Supported sources: $CBK_CLOUDS" 1>&2
                 exit 1
             fi
+
             clouds="$clouds $1"
             shift
             ;;
@@ -38,7 +39,8 @@ done
 # Ensure the data directory exists.
 test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
 
-for cloud in $clouds; do
+for cloud in $clouds
+do
     pullcommand="cbk-pull-$cloud"
     start="$(date +"%s")"
 

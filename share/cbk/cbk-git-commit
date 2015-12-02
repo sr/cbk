@@ -7,10 +7,8 @@ set -eu
 program="$1"
 directory="$2"
 
-if [ ! -d "$directory" ]; then
-    echo "at=error command=cbk-git-commit msg=\"directory not found\"" \
-        "directory=\"$directory\"" 1>&2
-fi
+test -d "$directory" ||
+abort "directory not found: \"$directory\""
 
 # Setup git repository access
 GIT_WORK_TREE="$directory"
