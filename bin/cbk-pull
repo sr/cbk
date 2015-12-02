@@ -1,6 +1,6 @@
 #!/bin/sh
 #/ Usage: cbk-pull [--version] [--help] [-a] <source>...
-#/ Pull down cloud data onto the local host. Supported sources:
+#/ Pull down cloud data onto the local host.
 set -eu
 
 cd "$(dirname "$0")/.."
