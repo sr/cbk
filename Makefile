@@ -47,7 +47,7 @@ cbk_$(VERSION)_all.deb:
 		-d "offlineimap >= 6.5.4" \
 		-d "rsync >= 3.1.0" \
 		-d "sed >= 4.2.2" \
-		-d "youtube-dl >= 2015.11.10" \
+		-d "youtube-dl >= 2015.11.24" \
 		--exclude .git \
 		--deb-priority "extra" \
 		bin/cbk-pull=/usr/bin/cbk-pull \
