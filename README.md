@@ -79,8 +79,13 @@ blog post, partialy quoted bellow:
 > corporations who don't give a shit about preserving your data. That's because
 > you're not the customer, you're the product. You already knew that, but you go
 > along with it anyway, because frankly you don't have much choice.
+>
+> [snip]
+>
+> **Remember: if it's not on a drive that is in your physical possession, it's not
+> really yours.**
 
-[jwz]: https://www.jwz.org/blog/2017/01/psa-back-up-your-shit/
+[jwz]: https://www.jwz.org/blog/2014/01/psa-back-up-your-shit/
 
 The `cbk-pull-github` command and related utilities were inspired by
 Daniel Schauenberg's ["Mirror GitHub repositories in pure shell"][mrtazz].
