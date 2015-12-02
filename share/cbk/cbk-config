@@ -15,7 +15,7 @@ export PATH
 : "${CBK_DATA_DIR:="/data"}"
 
 # The location of the configuration file
-: "${CBK_CONFIG:="/usr/local/etc/cbk.conf"}"
+: "${CBK_CONFIG:="/etc/cbk.conf"}"
 
 # List of supported sources
 : "${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard soundcloud-likes"}"

@@ -51,7 +51,10 @@ cbk_$(VERSION)_all.deb:
 		-d "youtube-dl >= 2015.11.24" \
 		--exclude .git \
 		--deb-priority "extra" \
+		--config-files "etc/cbk.conf" \
+		--deb-no-default-config-files \
 		bin/cbk-pull=/usr/bin/cbk-pull \
+		etc/cbk.conf=/etc/cbk.conf \
 		share/cbk=/usr/share
 
 python-%_all.deb:
