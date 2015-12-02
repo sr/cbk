@@ -6,15 +6,20 @@ from various hosted service providers onto the local machine.
 
 Supported services:
 
-- **fastmail-carddav:** Contact data hosted on [Fastmail](https://fastmail.com).
-- **fastmail-imap:** Email data hosted on Fastmail's IMAP servers.
+- **fastmail-carddav:** Mirror entire address book in vCard format from
+  [Fastmail](https://fastmail.com)'s CardDAV servers using
+  [vdirsyncer](https://github.com/untitaker/vdirsyncer).
+- **fastmail-imap:** Download email data hosted on Fastmail's IMAP servers onto
+  a local [Maildir](https://en.wikipedia.org/wiki/Maildir) using
+  [OfflineIMAP](http://offlineimap.org).
 - **github:** Mirror git repositories hosted on [GitHub](https://github.com)
-  that are accessible to the configured user/token pair. This includes
-  organization repositories.
-- **pinboard:** All bookmarks the user has saved on
-  [Pinboard](https://pinboard.in/).
-- **soundcloud-likes:** Audio files and meta data for all tracks the user has
-  liked on [SoundCloud](https://soundcloud.com).
+  for which the configured user/token pair has write access. This includes both
+  public and private repositories as well as those that belong to an
+  organization.
+- **pinboard:** Store all bookmarks the user has saved on
+  [Pinboard](https://pinboard.in/) into a single XML file.
+- **soundcloud-likes:** Download both audio files and meta data for all tracks
+  the user has liked on [SoundCloud](https://soundcloud.com).
 
 Data for all services except for `soundcloud-likes` is versioned in git.
 
