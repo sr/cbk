@@ -23,7 +23,7 @@ Supported services:
 
 Data for all services except for `soundcloud-likes` is versioned in git.
 
-## Installation and setup
+## Installation and Setup
 
 Packages are provided for Ubuntu 15.10 (wily). Follow the
 [setup instructions][setup] to install the packagecloud repository.
