@@ -17,6 +17,9 @@ export PATH
 # The location of the configuration file
 : "${CBK_CONFIG:="/etc/cbk.conf"}"
 
+# Source in configuration file when present
+test -f "$CBK_CONFIG" && . "$CBK_CONFIG"
+
 # List of supported sources
 : "${CBK_CLOUDS="github fastmail-imap fastmail-carddav irclogs pinboard soundcloud-likes"}"
 
@@ -37,9 +40,6 @@ export CBK_FASTMAIL_IMAP_DIR \
 # Fingerprint of Fastmail's IMAP server SSL certificate
 : "${CBK_FASTMAIL_CERT_FINGERPRINT:="958b1601563aef92607a41eb5bad22e3cace8431"}"
 export CBK_FASTMAIL_CERT_FINGERPRINT
-
-# Source in configuration file when present
-test -f "$CBK_CONFIG" && . "$CBK_CONFIG"
 
 # Finish up by creating the data directory if necessary
 test -d "$CBK_DATA_DIR" || mkdir -p "$CBK_DATA_DIR"
