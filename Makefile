@@ -7,17 +7,17 @@ VDIRSYNCER_DEBS = \
 	python-click-threading_0.1.2_all.deb \
 	python-requests-toolbelt_0.5.0_all.deb \
 	python-vdirsyncer_0.7.3_all.deb
+DEB_REPO = sr/cbk/ubuntu/wily
 
 release: package
-	package_cloud push sr/utils/ubuntu/trusty cbk_$(VERSION)_all.deb
-	package_cloud push sr/utils/ubuntu/wily cbk_$(VERSION)_all.deb
+	package_cloud push $(DEB_REPO) cbk_$(VERSION)_all.deb
 
 package: cbk_$(VERSION)_all.deb
 
 package-vdirsyncer: $(VDIRSYNCER_DEBS)
 
 release-vdirsyncer: package-vdirsyncer
-	package_cloud push sr/utils/ubuntu/wily $(VDIRSYNCER_DEBS)
+	package_cloud push $(DEB_REPO) $(VDIRSYNCER_DEBS)
 
 check: checkbashisms shellcheck
 
