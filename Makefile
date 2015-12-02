@@ -1,5 +1,5 @@
 SOURCES = $(wildcard bin/* share/cbk/*)
-VERSION = $(shell $(shell pwd)/bin/cbk-pull --version | cut -d' ' -f3)
+VERSION = $(shell cat share/cbk/version)
 VDIRSYNCER_DEBS = \
 	python-atomicwrites_0.1.8_all.deb \
 	python-click_5.0.0_all.deb \

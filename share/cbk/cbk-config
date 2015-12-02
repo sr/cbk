@@ -4,7 +4,7 @@
 set -eu
 
 # Current version. This is returned by 'cbk-pull --version'
-CBK_VERSION="0.0.12"
+CBK_VERSION="$(cat share/cbk/version)"
 export CBK_VERSION
 
 # Add porcelain utilities to the PATH
