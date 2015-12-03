@@ -10,8 +10,8 @@ Start by following the instructions to install the packagecloud repository:
 <https://packagecloud.io/sr/cbk/install>
 
 Once that is done, you will also need to install the `nilarimogard/webupd8`
-PPA [repository][webupd8] which provides an up to date of the `youtube-dl`,
-required for downloading SoundCloud likes.
+PPA [repository][webupd8] which provides an up to date version of the
+`youtube-dl` package, required for downloading SoundCloud likes.
 
     $ sudo apt-add-repository ppa:nilarimogard/webupd8
 

@@ -23,23 +23,24 @@ The fellowing sources are supported:
   versioned in git(1)
 
 - `fastmail-email`:
-  Downloads the entire mailbox from Fastmail's IMAP servers using offlineimap(1).
+  Downloads the entire mailbox from Fastmail's IMAP server using offlineimap(1).
   Emails are stored in a maildir(5) directory versioned in git.
 
 - `github`:
   Mirrors all git repository hosted on <https://github.com> for which the
   configured credentials have push access. This includes both public and
-  private repositories and those thatebelong to an organization. Repositories
+  private repositories and those belonging to an organization. Repositories
   are organized under a `<owner-name>/<repo-name>.git` directory structure.
 
 - `pinboard`:
-  Downloads the entire list of bookmarks the user has saved on Pinboard.com. It
-  is stored in a single XML file which is versioned in git. The format is
-  described in details here: <https://pinboard.in/api/#posts_all>.
+  Downloads the entire list of bookmarks the user has saved on
+  <https://pinboard.com>. It is stored in a single XML file which is versioned
+  in git. The format is described in details here:
+  <https://pinboard.in/api/#posts_all>.
 
 - `soundcloud-likes`:
-  Downloads all audio tracks and associated meta data that has been liked by the
-  configured user on <https://soundcloud.com>.
+  Downloads the audio files and associated meta data for all tracks that have
+  been liked by the configured user on <https://soundcloud.com>.
 
 ## OPTIONS
 
@@ -49,14 +50,14 @@ The fellowing sources are supported:
 Auxiliary options:
 
 * `--version`:
-  Write cbk version and exit.
+  Write the current cbk version and exit.
 
 * `--help`:
   Write brief usage instructions and exit.
 
 ## FILES
 
-The `cbk-pull` command reads its configuration from the `/etc/cbk.conf` file
+The `cbk-pull` attempts to reads its configuration from the `/etc/cbk.conf` file
 when present. The location of the configuration file can be overriden by
 setting the `CBK_CONFIG` environment variable.
 
