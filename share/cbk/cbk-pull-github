@@ -40,10 +40,10 @@ do
 
     if $skip
     then
-        echo "cloud=github at=skip git=$giturl dir=$repodir" 1>&2
+        echo "at=skip source=github git=$giturl dir=$repodir" 1>&2
         continue
     else
-        echo "cloud=github at=mirror git=$giturl dir=$repodir" 1>&2
+        echo "at=mirror source=github git=$giturl dir=$repodir" 1>&2
         cbk-git-mirror "$cloneurl" "$repodir"
     fi
 done
