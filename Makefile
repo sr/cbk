@@ -7,12 +7,18 @@ VDIRSYNCER_DEBS = \
 	python-click-threading_0.1.2_all.deb \
 	python-requests-toolbelt_0.5.0_all.deb \
 	python-vdirsyncer_0.7.3_all.deb
+MANPAGE = share/man/man1/cbk-pull.1
 DEB_REPO = sr/cbk/ubuntu/wily
 
-release: package
+release: package $(MANPAGE)
 	package_cloud push $(DEB_REPO) cbk_$(VERSION)_all.deb
 
 package: cbk_$(VERSION)_all.deb
+
+manpage: $(MANPAGE)
+
+$(MANPAGE): share/doc/cbk/cbk-pull.1.ronn share/man/man1
+	@ ronn < $< > $@
 
 package-vdirsyncer: $(VDIRSYNCER_DEBS)
 
@@ -23,6 +29,7 @@ check: checkbashisms shellcheck
 
 clean:
 	@ rm -f cbk*.deb $(VDIRSYNCER_DEBS)
+	@ rm -rf share/man
 
 shellcheck:
 	@ shellcheck -s sh -f gcc $(SOURCES)
@@ -30,7 +37,7 @@ shellcheck:
 checkbashisms:
 	@ checkbashisms -p $(SOURCES)
 
-cbk_$(VERSION)_all.deb:
+cbk_$(VERSION)_all.deb: $(MANPAGE)
 	@ fpm \
 		-s dir \
 		-n cbk \
@@ -55,8 +62,12 @@ cbk_$(VERSION)_all.deb:
 		--deb-no-default-config-files \
 		bin/cbk-pull=/usr/bin/cbk-pull \
 		etc/cbk.conf=/etc/cbk.conf \
-		share/cbk=/usr/share \
-		README.md=/usr/share/docs/cbk/README.md
+		share=/usr \
+		README.md=/usr/share/doc/cbk/README.md \
+		LICENSE=/usr/share/doc/cbk/LICENSE
+
+share/man/man1:
+	@ mkdir -p $@
 
 python-%_all.deb:
 	@ package="$$(printf "$@" | cut -d_ -f1 | sed s/python\-//)"; \
@@ -67,6 +78,7 @@ python-%_all.deb:
 .PHONY: \
 	package \
 	release \
+	manpage \
 	package-vdirsyncer \
 	release-vdirsyncer \
 	check \
