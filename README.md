@@ -19,5 +19,7 @@ capable of backing up data from the fellowing sources:
 - Audio tracks liked on SoundCloud.com
 
 To get started, read the [installation](/share/docs/install.md) instructions
-then checkout the [man page](/share/docs/cbk-pull.1.ronn.md) for more info and
-detailed usage.
+then checkout the [man page][man] for more details.
+
+[man]: http://atonie.org/2015/cbk/cbk-pull.1.html
+
