@@ -18,8 +18,8 @@ capable of backing up data from the fellowing sources:
 - Bookmarks saved on Pinboard.com
 - Audio tracks liked on SoundCloud.com
 
-To get started, read the [installation](/share/doc/cbk/install.md) instructions
-then checkout the [man page][man] for more details.
+To get started, read the [installation](/share/doc/cbk/install.md#readme)
+instructions then checkout the [man page][man] for more details.
 
 [man]: http://atonie.org/2015/cbk/cbk-pull.1.html
 
