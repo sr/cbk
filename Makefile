@@ -16,6 +16,8 @@ DEB_REPO = sr/cbk/ubuntu/wily
 
 release: $(CBK_DEB) publish-manpage
 	package_cloud push $(DEB_REPO) $(CBK_DEB)
+	git tag $(VERSION) HEAD
+	git push origin $(VERSION)
 
 publish-manpage: clean-html-manpage $(MANPAGE_HTML_DEST)
 	@ cd $(MANPAGE_HTML_REPO) && \
