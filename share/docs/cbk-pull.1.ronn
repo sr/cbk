@@ -1,0 +1,124 @@
+cbk-pull(1) -- download personnal data hosted on third party services
+=====================================================================
+
+## SINOPSYS
+
+`cbk-pull` source...<br>
+`cbk-pull` -a<br>
+`cbk-pull` --version<br>
+`cbk-pull` --help<br>
+
+## DESCRIPTION
+
+The `cbk-pull` utility downloads data from various remote sources onto the
+local machine. It can either be used with the `-a` option which instructs it
+to download data from all supported sources or with no argument and a list of
+sources.
+
+The fellowing sources are supported:
+
+- `fastmail-carddav`:
+  Downloads the entire address book from <https://fastmail.com>'s CardDAV
+  server using vdirsyncer(1). Contacts are stored as indivual iCal files and
+  versioned in git(1)
+
+- `fastmail-email`:
+  Downloads the entire mailbox from Fastmail's IMAP servers using offlineimap(1).
+  Emails are stored in a maildir(5) directory versioned in git.
+
+- `github`:
+  Mirrors all git repository hosted on <https://github.com> for which the
+  configured credentials have push access. This includes both public and
+  private repositories and those thatebelong to an organization. Repositories
+  are organized under a `<owner-name>/<repo-name>.git` directory structure.
+
+- `pinboard`:
+  Downloads the entire list of bookmarks the user has saved on Pinboard.com. It
+  is stored in a single XML file which is versioned in git. The format is
+  described in details here: <https://pinboard.in/api/#posts_all>.
+
+- `soundcloud-likes`:
+  Downloads all audio tracks and associated meta data that has been liked by the
+  configured user on <https://soundcloud.com>.
+
+## OPTIONS
+
+* `-a`:
+  Download data from all supported sources.
+
+Auxiliary options:
+
+* `--version`:
+  Write cbk version and exit.
+
+* `--help`:
+  Write brief usage instructions and exit.
+
+## FILES
+
+The `cbk-pull` command reads its configuration from the `/etc/cbk.conf` file
+when present. The location of the configuration file can be overriden by
+setting the `CBK_CONFIG` environment variable.
+
+The file is sourced as is using the dot (`source`) shell built-in utility. It
+typically only consist of `export VAR=value` statements. See [ENVIRONMENT][].
+
+## ENVIRONMENT
+
+* `CBK_CONFIG`:
+  The location of the configuration file. Defaults to `/etc/cbk.conf`.
+
+* `CBK_DATA_DIR`:
+  The path of the base directory under which all data is stored. Defaults to
+  `/data`. The location of individual sources can be overriden using the
+  `CBK_<SOURCE-NAME>_DIR` environment variables.
+
+* `CBK_FASTMAIL_USERNAME`:
+  The username used for connecting to the fastmail.com IMAP and CardDAV servers.
+  Required for the `fastmail-imap` and `fastmail-carddav` sources.
+
+* `CBK_FASTMAIL_PASSWORD`:
+  The password used for connecting to the fastmail.com IMAP and CardDAV servers.
+  Required for the `fastmail-imap` and `fastmail-carddav` sources.
+
+* `CBK_GITHUB_USER`:
+  The github.com user login whose repositories should be mirrored. Required for
+  the `github` source.
+
+* `CBK_GITHUB_TOKEN`:
+  The github.com personnal access token used to list and clone the user's
+  repositories. Must have the `repo` scope. Create a token here:
+  <https://github.com/settings/tokens/new>. Required for the `github` source.
+
+* `CBK_GITHUB_EXCLUDES`:
+  Optional space separated list of GitHub user login or repositories that should
+  **NOT** be mirrored.
+
+* `CBK_PINBOARD_TOKEN`:
+  The full Pinboard API token in the form of `<username>:<token>`. Get it from
+  here: <https://pinboard.in/settings/password>. Required for the `pinboard`
+  source.
+
+* `CBK_PINBOARD_LIKES_USER`:
+  The name of the soundcloud.com user whose likes should be backed up. Required
+  for the `soundcloud-likes` source.
+
+## ACKNOWLEDGMENTS
+
+* This project was inspired by Jamie Zawinski's "PSA: Back Up Your Shit" blog
+  post: <https://www.jwz.org/blog/2014/01/psa-back-up-your-shit/>
+
+* The `cbk-pull-github` and related ancillary commands are based on code written
+  by Daniel  Schauenberg.
+  See <https://unwiredcouch.com/bits/2014/08/16/github-mirror-shell.html>
+
+## AUTHOR
+
+`cbk-pull` was written by Simon Rozet <me@simonrozet.com>.
+
+## BUGS
+
+Tons of services commonly used on a daily basis are not supported, such as
+Twitter, Facebook, Foursquare, etc.
+
+Please report bugs at <https://github.com/sr/cbk/issues>.
