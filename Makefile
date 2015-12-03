@@ -1,5 +1,6 @@
 SOURCES = $(wildcard bin/* share/cbk/*)
 VERSION = $(shell cat share/cbk/version)
+CBK_DEB = cbk_$(VERSION)_all.deb
 VDIRSYNCER_DEBS = \
 	python-atomicwrites_0.1.8_all.deb \
 	python-click_5.0.0_all.deb \
@@ -7,18 +8,20 @@ VDIRSYNCER_DEBS = \
 	python-click-threading_0.1.2_all.deb \
 	python-requests-toolbelt_0.5.0_all.deb \
 	python-vdirsyncer_0.7.3_all.deb
-MANPAGE = share/man/man1/cbk-pull.1
+MANPAGE_SRC = share/doc/cbk/cbk-pull.1.ronn
+MANPAGE_DEST = share/man/man1/cbk-pull.1
+MANPAGE_HTML_REPO = $(HOME)/src/github.com/sr/sr.github.com
+MANPAGE_HTML_DEST = $(MANPAGE_HTML_REPO)/2015/cbk/cbk-pull.1.html
 DEB_REPO = sr/cbk/ubuntu/wily
 
-release: package $(MANPAGE)
-	package_cloud push $(DEB_REPO) cbk_$(VERSION)_all.deb
+release: $(CBK_DEB) publish-manpage
+	package_cloud push $(DEB_REPO) $(CBK_DEB)
 
-package: cbk_$(VERSION)_all.deb
-
-manpage: $(MANPAGE)
-
-$(MANPAGE): share/doc/cbk/cbk-pull.1.ronn share/man/man1
-	@ ronn < $< > $@
+publish-manpage: $(MANPAGE_HTML_DEST)
+	@ cd $(MANPAGE_HTML_REPO) && \
+			git add $< && \
+			git commit -m "update cbk-pull man page" && \
+			git push origin master
 
 package-vdirsyncer: $(VDIRSYNCER_DEBS)
 
@@ -28,7 +31,7 @@ release-vdirsyncer: package-vdirsyncer
 check: checkbashisms shellcheck
 
 clean:
-	@ rm -f cbk*.deb $(VDIRSYNCER_DEBS)
+	@ rm -f $(CBK_DEB) $(VDIRSYNCER_DEBS)
 	@ rm -rf share/man
 
 shellcheck:
@@ -37,7 +40,7 @@ shellcheck:
 checkbashisms:
 	@ checkbashisms -p $(SOURCES)
 
-cbk_$(VERSION)_all.deb: $(MANPAGE)
+$(CBK_DEB): $(MANPAGE_DEST)
 	@ fpm \
 		-s dir \
 		-n cbk \
@@ -66,19 +69,28 @@ cbk_$(VERSION)_all.deb: $(MANPAGE)
 		README.md=/usr/share/doc/cbk/README.md \
 		LICENSE=/usr/share/doc/cbk/LICENSE
 
-share/man/man1:
-	@ mkdir -p $@
-
 python-%_all.deb:
 	@ package="$$(printf "$@" | cut -d_ -f1 | sed s/python\-//)"; \
 		version="$$(printf "$@" | cut -d_ -f2)"; \
 		fpm -v "$$version" -s python -t deb \
 			--deb-no-default-config-files "$$package"
 
+$(MANPAGE_HTML_REPO):
+	@ git clone https://github.com/sr/sr.github.com $@
+
+$(MANPAGE_HTML_DEST): $(MANPAGE_SRC) $(MANPAGE_HTML_REPO)
+	@ mkdir -p $(@D)
+	@ ronn -5 < $< > $@
+
+$(MANPAGE_DEST): $(MANPAGE_SRC) share/man/man1
+	@ ronn < $< > $@
+
+share/man/man1:
+	@ mkdir -p $@
+
 .PHONY: \
-	package \
 	release \
-	manpage \
+	publish-manpage \
 	package-vdirsyncer \
 	release-vdirsyncer \
 	check \
