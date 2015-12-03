@@ -17,9 +17,9 @@ DEB_REPO = sr/cbk/ubuntu/wily
 release: $(CBK_DEB) publish-manpage
 	package_cloud push $(DEB_REPO) $(CBK_DEB)
 
-publish-manpage: $(MANPAGE_HTML_DEST)
+publish-manpage: clean-html-manpage $(MANPAGE_HTML_DEST)
 	@ cd $(MANPAGE_HTML_REPO) && \
-			git add $< && \
+			git add $(MANPAGE_HTML_DEST) && \
 			git commit -m "update cbk-pull man page" && \
 			git push origin master
 
@@ -33,6 +33,9 @@ check: checkbashisms shellcheck
 clean:
 	@ rm -f $(CBK_DEB) $(VDIRSYNCER_DEBS)
 	@ rm -rf share/man
+
+clean-html-manpage:
+	@ rm -f $(MANPAGE_HTML_DEST)
 
 shellcheck:
 	@ shellcheck -s sh -f gcc $(SOURCES)
@@ -80,7 +83,7 @@ $(MANPAGE_HTML_REPO):
 
 $(MANPAGE_HTML_DEST): $(MANPAGE_SRC) $(MANPAGE_HTML_REPO)
 	@ mkdir -p $(@D)
-	@ ronn -5 < $< > $@
+	@ ronn -5 --style=toc < $< > $@
 
 $(MANPAGE_DEST): $(MANPAGE_SRC) share/man/man1
 	@ ronn < $< > $@
@@ -96,4 +99,5 @@ share/man/man1:
 	check \
 	checkbashisms \
 	shellcheck \
-	clean
+	clean \
+	clean-html-manpage
