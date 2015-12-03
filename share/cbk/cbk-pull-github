@@ -15,7 +15,8 @@ test -z "$CBK_GITHUB_TOKEN" && abort "CBK_GITHUB_TOKEN not set"
 
 # Iterate over all repositories this set of credentials has access to
 cbk-github-repos "$CBK_GITHUB_USER" "$CBK_GITHUB_TOKEN" |
-while read line; do
+while read line
+do
     giturl="$line"
     user="$(echo "$giturl" | cut -d"/" -f4)"
     repo="$(
@@ -28,14 +29,17 @@ while read line; do
 
     # Skip mirroring if the repository is included in the exclude list
     skip=false
-    for exclude in $CBK_GITHUB_EXCLUDES; do
-        if printf "%s/%s" "$user" "$repo" | grep -q "$exclude"; then
+    for exclude in $CBK_GITHUB_EXCLUDES
+    do
+        if printf "%s/%s" "$user" "$repo" | grep -q "$exclude"
+        then
             skip=true
             break
         fi
     done
 
-    if $skip; then
+    if $skip
+    then
         echo "cloud=github at=skip git=$giturl dir=$repodir" 1>&2
         continue
     else

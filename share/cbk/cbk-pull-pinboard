@@ -6,10 +6,9 @@ set -eu
 cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
-if [ -z "$CBK_PINBOARD_TOKEN" ]; then
-    abort "Pinboard API token missing. Get one at https://pinboard.in/settings/" \
-        "password and set CBK_PINBOARD_TOKEN."
-fi
+test -z "$CBK_PINBOARD_TOKEN" &&
+abort "Pinboard API token missing. Get one at https://pinboard.in/settings/" \
+    "password and set CBK_PINBOARD_TOKEN."
 
 test -d "$CBK_PINBOARD_DIR" || mkdir "$CBK_PINBOARD_DIR"
 

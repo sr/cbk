@@ -8,7 +8,8 @@ cd "$(dirname "$0")/../.."
 . share/cbk/cbk-config
 
 # Bail out if vdirsyncer is not available on the PATH
-if ! command -v "vdirsyncer">/dev/null; then
+if ! command -v "vdirsyncer">/dev/null
+then
     echo "$(basename "$0"): vdirsyncer command not found" 1>&2
     exit 1
 fi
